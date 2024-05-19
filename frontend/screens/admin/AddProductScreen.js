@@ -109,7 +109,7 @@ const AddProductScreen = ({ navigation, route }) => {
     };
 
     fetch(
-      "https://api-easybuy.herokuapp.com/photos/upload",
+        `${network.serverip}/photos/upload`,
       ImageRequestOptions
     )
       .then((response) => response.json())
@@ -148,7 +148,7 @@ const AddProductScreen = ({ navigation, route }) => {
 
     if (!result.cancelled) {
       console.log(result);
-      setImage(result.uri);
+      setImage(result.assets[0].uri);
       upload();
     }
   };

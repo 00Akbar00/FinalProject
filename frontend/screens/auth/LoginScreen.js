@@ -9,7 +9,7 @@ import {
   ScrollView,
   ImageBackground,
 } from "react-native";
-
+import axios from "axios"; // Import Axios
 import { colors, network } from "../../constants";
 import CustomInput from "../../components/CustomInput";
 import CustomButton from "../../components/CustomButton";
@@ -66,36 +66,46 @@ const LoginScreen = ({ navigation }) => {
       return setError("Password must be 6 characters long");
     }
 
-    // API Call
-    const requestOptions = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
-      redirect: "follow",
-    };
-
-    fetch(network.serverip + "/login", requestOptions)
-      .then((response) => response.json())
-      .then((result) => {
-        if (result.status === 200 || (result.status === 1 && result.success !== false)) {
-          if (result?.data?.userType === "ADMIN") {
-            _storeData(result.data);
-            setIsLoading(false);
-            navigation.replace("dashboard", { authUser: result.data });
-          } else {
-            _storeData(result.data);
-            setIsLoading(false);
-            navigation.replace("tab", { user: result.data });
-          }
-        } else {
+    // API Call using Axios
+    axios
+    .post(network.serverip + "/login", { email, password })
+    .then((response) => {
+      const result = response.data;
+      if (result.status === 200 || (result.status === 1 && result.success !== false)) {
+        if (result?.data?.userType === "ADMIN") {
+          _storeData(result.data);
           setIsLoading(false);
-          setError(result.message);
+          navigation.replace("dashboard", { authUser: result.data });
+        } else {
+          _storeData(result.data);
+          setIsLoading(false);
+          navigation.replace("tab", { user: result.data });
         }
-      })
-      .catch((error) => {
+      } else {
         setIsLoading(false);
-        setError(error.message);
-      });
+        setError(result.message);
+      }
+    })
+    .catch((error) => {
+      setIsLoading(false);
+      if (error.response) {
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+        console.log("Server Error Status:", error.response.status);
+        console.log("Server Error Data:", error.response.data);
+        setError("Server Error: " + error.response.data.message);
+      } else if (error.request) {
+        // The request was made but no response was received
+        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+        // http.ClientRequest in node.js
+        console.log("Request Error:", error.request);
+        setError("Request Error: Please check your network connection.");
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        console.log("Axios Error:", error.message);
+        setError("Axios Error: " + error.message);
+      }
+    });
   };
 
   return (

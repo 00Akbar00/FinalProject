@@ -297,25 +297,23 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    paddingVertical: 10,
+    paddingVertical: 12,
     paddingHorizontal: 18,
     borderBottomWidth: 1,
-    borderBottomColor: colors.light, // Add a light border at the bottom
+    borderBottomColor: colors.light,
   },
   topbarlogoContainer: {
     flexDirection: "row",
     alignItems: "center",
-    marginRight:20,
-
   },
   logo: {
-    height: 60, // Increase the size of the logo
-    width: 60, // Increase the size of the logo
+    height: 50,
+    width: 50,
     resizeMode: "contain",
-    marginRight: 0, // Add some margin between the logo and text
+    marginRight: 10,
   },
   toBarText: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: "bold",
     color: '#252422',
   },
@@ -344,37 +342,15 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     paddingHorizontal: 14,
-    marginTop: 1,
+    marginTop: 10,
   },
   inputContainer: {
     flex: 1,
-  },
-  searchDropdownContainer: {
-    borderRadius: 5,
-    elevation: 5,
-    position: "absolute",
-    zIndex: 20,
-    top: -20,
-    maxHeight: 300,
-    backgroundColor: colors.light,
-  },
-  searchTextInput: {
-    borderRadius: 10,
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    backgroundColor: colors.white,
-  },
-  searchItem: {
-    padding: 10,
-    marginTop: 2,
-    backgroundColor: colors.white,
-    borderColor: colors.muted,
-  },
-  searchItemText: {
-    color: colors.muted,
+    marginRight: 10,
   },
   buttonContainer: {
     marginLeft: 10,
+    marginRight: 10,
   },
   scanButton: {
     flexDirection: "row",
@@ -383,47 +359,40 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     height: 40,
     paddingHorizontal: 16,
+    justifyContent: "center",
   },
   scanButtonText: {
-    fontSize: 15,
+    fontSize: 16,
     color: colors.light,
     fontWeight: "bold",
   },
-  scanIcon: {
-    width: 20,
-    height: 20,
-    marginLeft: 8,
-  },
   promotiomSliderContainer: {
-    marginVertical: 10,
+    marginVertical: 20,
     backgroundColor: colors.light,
   },
-  sectionContainer: {
-    marginVertical: 10,
-  },
-  sectionTitle: {
+  primaryTextContainer: {
     paddingHorizontal: 20,
     fontSize: 20,
     fontWeight: "bold",
     color: colors.text,
     marginBottom: 10,
   },
-  categoryItem: {
+  categoryContainer: {
+    flexDirection: "row",
     marginRight: 10,
-    
   },
-  productCardItem: {
-    marginRight: 10,
+  emptyView: {
+    height: 20,
   },
   productCardContainerEmpty: {
-    padding: 10,
+    padding: 20,
     alignItems: "center",
   },
   productCardContainerEmptyText: {
-    fontSize: 15,
+    fontSize: 18,
     fontStyle: "italic",
     color: colors.muted,
     fontWeight: "600",
+    textAlign: "center",
   },
-  
 });

@@ -1,7 +1,7 @@
 import { StyleSheet, Image, View } from "react-native";
 import React, { useEffect } from "react";
 import { colors } from "../../constants";
-import logo from "../../assets/logo/logo_white.png";
+import logo from "../../assets/logo/logo.png";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -48,7 +48,7 @@ export default Splash;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.primary,
+    backgroundColor: "#F5F5F5",
     alignItems: "center",
     justifyContent: "center",
   },

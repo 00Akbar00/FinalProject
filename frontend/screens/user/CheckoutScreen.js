@@ -289,7 +289,7 @@ const styles = StyleSheet.create({
   container: {
     width: "100%",
     flexDirecion: "row",
-    backgroundColor: '#f0f4f8',
+    backgroundColor: colors.light,
     alignItems: "center",
     justifyContent: "flex-start",
     paddingBottom: 0,
