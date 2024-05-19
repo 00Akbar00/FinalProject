@@ -1,9 +1,10 @@
 import { StyleSheet, Text, TouchableOpacity, View, ImageBackground } from "react-native";
 import React from "react";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons } from "react-native-vector-icons";
 import { colors } from "../../constants";
 import CustomInput from "../../components/CustomInput";
 import CustomButton from "../../components/CustomButton";
+import BackgroundImage from '../../assets/image/resetBackground.jpg'
 
 const sendInstructionsHandle = () => {
   //TODO: handle user verification and send password reset link
@@ -12,7 +13,7 @@ const sendInstructionsHandle = () => {
 const ForgetPasswordScreen = ({ navigation }) => {
   return (
     <ImageBackground
-      source={require('../../assets/image/resetBackground.jpg')} // Specify the path to your background image
+      source={BackgroundImage} // Specify the path to your background image
       style={styles.backgroundImage}
       resizeMode="cover" // Cover the entire background
       blurRadius={3} // Adjust the blur radius as needed

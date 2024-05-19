@@ -9,7 +9,7 @@ import {
   RefreshControl,
   ScrollView,
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons } from "react-native-vector-icons";
 import React, { useEffect, useState } from "react";
 import cartIcon from "../../assets/icons/cart_beg.png";
 import scanIcon from "../../assets/icons/scan_icons.png";
@@ -23,34 +23,42 @@ import { bindActionCreators } from "redux";
 import * as actionCreaters from "../../states/actionCreaters/actionCreaters";
 import SearchableDropdown from "react-native-searchable-dropdown";
 import { SliderBox } from "react-native-image-slider-box";
+import SofaLine from '../../assets/icons/sofa-line.png'
+import Chairs from '../../assets/icons/chair.png'
+import Stools from '../../assets/icons/stool.png'
+import Tables from '../../assets/icons/table.png'
+import SofaBanner from '../../assets/image/banners/sofa-banner.jpeg'
+import Contrast from '../../assets/image/banners/contrast.jpeg'
+import ChairBanner from '../../assets/image/banners/chair.jpeg'
+
 
 const category = [
   {
     _id: "62fe244f58f7aa8230817f89",
     title: "Sofas",
-    image: require("../../assets/icons/sofa-line.png"),
+    image: SofaLine,
   },
   {
     _id: "62fe243858f7aa8230817f86",
     title: "Chairs",
-    image: require("../../assets/icons/chair.png"),
+    image: Chairs,
   },
   {
     _id: "62fe241958f7aa8230817f83",
     title: "Stools",
-    image: require("../../assets/icons/stool.png"),
+    image: Stools,
   },
   {
     _id: "62fe246858f7aa8230817f8c",
     title: "Tables",
-    image: require("../../assets/icons/table.png"),
+    image: Tables,
   },
 ];
 
 const slides = [
-  require("../../assets/image/banners/sofa-banner.jpeg"),
-  require("../../assets/image/banners/contrast.jpeg"),
-  require("../../assets/image/banners/chair.jpeg"),
+  SofaBanner,
+  Contrast,
+  ChairBanner,
 ];
 
 const HomeScreen = ({ navigation, route }) => {

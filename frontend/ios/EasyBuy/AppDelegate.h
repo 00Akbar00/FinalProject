@@ -1,7 +1,7 @@
 #import <RCTAppDelegate.h>
 #import <UIKit/UIKit.h>
-#import <Expo/Expo.h>
+#import <React/RCTBridgeDelegate.h>
 
-@interface AppDelegate : EXAppDelegateWrapper
+@interface AppDelegate : RCTAppDelegate <RCTBridgeDelegate>
 
 @end

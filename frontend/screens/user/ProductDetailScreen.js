@@ -7,7 +7,7 @@ import {
   Text,
 } from "react-native";
 import React, { useState, useEffect } from "react";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons } from "react-native-vector-icons";
 import cartIcon from "../../assets/icons/cart_beg.png";
 import { colors, network } from "../../constants";
 import CustomButton from "../../components/CustomButton";

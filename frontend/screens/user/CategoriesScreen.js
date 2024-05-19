@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import React, { useState, useEffect } from "react";
 
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons } from "react-native-vector-icons";
 import cartIcon from "../../assets/icons/cart_beg.png";
 import emptyBox from "../../assets/image/emptybox.png";
 import { colors, network } from "../../constants";
@@ -21,6 +21,10 @@ import * as actionCreaters from "../../states/actionCreaters/actionCreaters";
 import CustomIconButton from "../../components/CustomIconButton/CustomIconButton";
 import ProductCard from "../../components/ProductCard/ProductCard";
 import CustomInput from "../../components/CustomInput";
+import Garments from "../../assets/icons/garments.png";
+import Electronics from "../../assets/icons/electronics.png";
+import Cosmetics from "../../assets/icons/cosmetics.png";
+import Grocery from "../../assets/icons/grocery.png";
 
 const CategoriesScreen = ({ navigation, route }) => {
   const { categoryID } = route.params;
@@ -70,22 +74,22 @@ const CategoriesScreen = ({ navigation, route }) => {
     {
       _id: "62fe244f58f7aa8230817f89",
       title: "Garments",
-      image: require("../../assets/icons/garments.png"),
+      image: Garments,
     },
     {
       _id: "62fe243858f7aa8230817f86",
       title: "Electornics",
-      image: require("../../assets/icons/electronics.png"),
+      image: Electronics,
     },
     {
       _id: "62fe241958f7aa8230817f83",
       title: "Cosmentics",
-      image: require("../../assets/icons/cosmetics.png"),
+      image: Cosmetics,
     },
     {
       _id: "62fe246858f7aa8230817f8c",
       title: "Groceries",
-      image: require("../../assets/icons/grocery.png"),
+      image: Grocery,
     },
   ];
   const [selectedTab, setSelectedTab] = useState(category[0]);

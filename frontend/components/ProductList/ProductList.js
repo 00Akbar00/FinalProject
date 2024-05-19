@@ -1,6 +1,6 @@
 import { StyleSheet, Image, View, Text, TouchableOpacity } from "react-native";
 import React from "react";
-import { MaterialIcons } from "@expo/vector-icons";
+import { MaterialIcons } from "react-native-vector-icons";
 import { colors } from "../../constants";
 
 const ProductList = ({

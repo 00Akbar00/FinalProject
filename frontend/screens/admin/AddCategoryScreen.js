@@ -12,11 +12,10 @@ import React, { useState } from "react";
 import { colors, network } from "../../constants";
 import CustomInput from "../../components/CustomInput";
 import CustomButton from "../../components/CustomButton";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons } from "react-native-vector-icons";
 import CustomAlert from "../../components/CustomAlert/CustomAlert";
-import * as ImagePicker from "expo-image-picker";
+// import * as ImagePicker from "expo-image-picker";
 import ProgressDialog from "react-native-progress-dialog";
-import { AntDesign } from "@expo/vector-icons";
 
 const AddCategoryScreen = ({ navigation, route }) => {
   const { authUser } = route.params; //authUser data

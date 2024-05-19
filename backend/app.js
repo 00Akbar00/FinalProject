@@ -17,7 +17,6 @@ const { addCategory, getCategories, updateCategory, deleteCategory } = require('
 const { addToWishlist, wishlist, removeFromWishlist } = require('./controllers/user/wishlist');
 const mongoose = require("./config/database")()
 const multer  = require('multer');
-const driveService = require('./utils/driveService');
 const { uploadFile } = require('./controllers/files/files');
 const upload = multer({ dest: "./uploads" })
 

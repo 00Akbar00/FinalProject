@@ -1,3 +1,4 @@
+import React from 'react'
 import { NavigationContainer } from "@react-navigation/native";
 import LoginScreen from "../screens/auth/LoginScreen";
 import SignupScreen from "../screens/auth/SignupScreen";

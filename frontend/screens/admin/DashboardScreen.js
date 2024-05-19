@@ -9,8 +9,8 @@ import {
   RefreshControl,
 } from "react-native";
 import React, { useState, useEffect } from "react";
-import { Ionicons } from "@expo/vector-icons";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { Ionicons } from "react-native-vector-icons";
+import { MaterialCommunityIcons } from "react-native-vector-icons";
 import { colors } from "../../constants";
 import CustomCard from "../../components/CustomCard/CustomCard";
 import OptionList from "../../components/OptionList/OptionList";

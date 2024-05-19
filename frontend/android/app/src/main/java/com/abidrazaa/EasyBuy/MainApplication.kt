@@ -16,8 +16,7 @@ import com.facebook.react.defaults.DefaultReactNativeHost
 import com.facebook.react.flipper.ReactNativeFlipper
 import com.facebook.soloader.SoLoader
 
-import expo.modules.ApplicationLifecycleDispatcher
-import expo.modules.ReactNativeHostWrapper
+
 
 class MainApplication : Application(), ReactApplication {
 
@@ -30,7 +29,7 @@ class MainApplication : Application(), ReactApplication {
             return PackageList(this).packages
           }
 
-          override fun getJSMainModuleName(): String = ".expo/.virtual-metro-entry"
+          override fun getJSMainModuleName(): String = "EasyBuy"
 
           override fun getUseDeveloperSupport(): Boolean = BuildConfig.DEBUG
 
