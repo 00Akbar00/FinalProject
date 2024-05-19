@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "aws-cognito-363816",
+  "private_key_id": "976d98468f1c38dd06e13de27a4eea429d4e4d3c",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQDGAVJlWmYBJdHW\nb3T1chdpkiRs+4OpbQlVG/GAx/CGnO+HZQJ3beH7Tiu4IpdRXmTek/5yjMEiI3Ab\nPA31G37mKs1PupFpc2F0IKNnWRsgfvU6CaehDym1z/9esjiIXogjXz+kd3T2fSQl\ncZMYcZ27FWy1PF6m9c6RnTdlvB+YT4awR4k8vWKnQyDKA5EVW+nX+YGeOpEFAWla\nEhNE0fVnrcdmgED/Ap3VbKXtjgOm4kesojRlkNY0Pe9OHAZMPJ5USG/rtaOVR8Ah\nh1lH57OKFl11Up5YppDL613IKMBBPGifsG39UNVYTLx/MSf2mAyAxeZTFbX39KtG\n/yLObz9tAgMBAAECggEAGkPCH34ggj33SfPCZq1x5BfV25v4UMDNKFw6ynubEOwf\nzMyuCVQK0hhCLdxuyIUWKb0lVyILG2FqhT5P1qfFSzg5wD3t/Hgo4OvUaQjVk5er\npT1zHibiAEM9K11GKParJdAEY+dRnUGnygy495jYlKCoqRi/MHPyKPgbCVRtN3l3\nLRmbli1iCpjZrf7sXxlVjUPAAahvCVoHBDu2LTFAejVO3oecVBD1hRdJQqFOAm1b\ne2zaUvTvHdYQz5adxsghv6928FlcngeJUn3tqpemGIHebKrS3NdWX66qvbDQ2OpB\nQryw6AJHRQWjY8BHvKdNvtTpMN6zjJDAn9KjRqO++QKBgQDys1dXo1ZtmjG1/xMq\nXZFgtxlA/BpgGK4uHn+TchKz/vRQQPiX/zvw3uYhH6UTvGToVLNmGxm+Gapldtdl\nWbcD464ZnGPpYkcl2tpexGJGohb3wXlXF5trOMduJom6p1NNQghndMmMRwtLhF7Z\nVR6Vovk1nJt4/3wY2OJOLKwOVQKBgQDQ2vvKcuCnDulnWhGV+WNf2Ln9yetXOCq6\ntp83WMos/s5MNWkRVgVtVNqCXNPAozUDgEvei2QIHOW5TocehGc9yWPcnvPvnxCr\nxHagm6UITothiNjfXvT7ENiNFHl/GPCAJRwoSiql6nfA70md2wW06N4SRghwMBFK\nsxoU5tFUuQKBgQCK4D6BYnCpRMtfRfc0jdgLTJqBygBZrqW0tDTyLRswrhok9hiJ\n+T3WZeWvXIk8Utg27Yi+S5GeatdLOgak8wI7koPkGc4+FMN7kNDV23AU1NlpqecC\nA/smDpZnnFvBV8/d7IQclwJhZ6G586PGnuNiYqBRoiyAv0jGewx8CSnnBQKBgQCM\nGkoL3ZIcHuGtpfrkCz6BXkYuHBSWFqR7SeR2YUaGdot3DeEkcvsDA4ftKU4XDKSU\na6z5ZbI9yvzDmQ0FCLak+QLXTX2/wYmSYCFfzekgMGhJjl5FQVK/VOafhRuXiehT\nXhGMaWxAjo+0yhAtJ26llAzcX0Rr1aLT5F9bpBbKaQKBgQCVV9+7yHtCCJVrkgnf\nA3rJT1k4yO4ehVW/nxpQK4i3i356MoMIW2ozWiQ7avrtwAP2XVR736+U9kmTwqod\nKGXr6G+rj81yt6Qh7IZxstFRAj+clgVlPdWouZlfPxq8i7vgsg3xN5LaSsMv0Oa6\nsbMHEaZ5g415pD9Db2z4/DBswg==\n-----END PRIVATE KEY-----\n",
+  "client_email": "viro-react-muid@aws-cognito-363816.iam.gserviceaccount.com",
+  "client_id": "106854077903908586213",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/viro-react-muid%40aws-cognito-363816.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
