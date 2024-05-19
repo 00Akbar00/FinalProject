@@ -109,7 +109,7 @@ const AddProductScreen = ({ navigation, route }) => {
     };
 
     fetch(
-        `${network.serverip}/photos/upload`,
+        `${network.serverip}/photos/upload-file`,
       ImageRequestOptions
     )
       .then((response) => response.json())
