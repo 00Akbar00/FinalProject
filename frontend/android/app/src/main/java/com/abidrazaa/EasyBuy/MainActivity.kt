@@ -23,20 +23,17 @@ class MainActivity : ReactActivity() {
    */
   override fun getMainComponentName(): String = "EasyBuy"
 
-  /**
-   * Returns the instance of the [ReactActivityDelegate]. We use [DefaultReactActivityDelegate]
-   * which allows you to enable New Architecture with a single boolean flags [fabricEnabled]
-   */
-  override fun createReactActivityDelegate(): ReactActivityDelegate {
-    return ReactActivityDelegateWrapper(
-          this,
-          BuildConfig.IS_NEW_ARCHITECTURE_ENABLED,
-          object : DefaultReactActivityDelegate(
-              this,
-              mainComponentName,
-              fabricEnabled
-          ){})
-  }
+    /**
+     * Returns the instance of the [ReactActivityDelegate]. We use [DefaultReactActivityDelegate]
+     * which allows you to enable New Architecture with a single boolean flag [fabricEnabled].
+     */
+    override fun createReactActivityDelegate(): ReactActivityDelegate {
+        return object : DefaultReactActivityDelegate(
+            this,
+            mainComponentName,
+            fabricEnabled
+        ) {}
+    }
 
   /**
     * Align the back button behavior with Android S
