@@ -7,10 +7,11 @@ import {
   ScrollView,
   FlatList,
   RefreshControl,
+  SafeAreaView
 } from "react-native";
 import React, { useState, useEffect } from "react";
-import { Ionicons } from "react-native-vector-icons";
-import { MaterialCommunityIcons } from "react-native-vector-icons";
+import Ionicons from "react-native-vector-icons/Ionicons";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { colors } from "../../constants";
 import CustomCard from "../../components/CustomCard/CustomCard";
 import OptionList from "../../components/OptionList/OptionList";
@@ -115,8 +116,8 @@ const DashboardScreen = ({ navigation, route }) => {
 
   return (
     <InternetConnectionAlert onChange={(connectionState) => {}}>
-      <View style={styles.container}>
-        <StatusBar></StatusBar>
+      <SafeAreaView style={styles.container}>
+      <StatusBar translucent />
         <ProgressDialog visible={isloading} label={label} />
         <View style={styles.topBarContainer}>
           <TouchableOpacity
@@ -220,7 +221,7 @@ const DashboardScreen = ({ navigation, route }) => {
             <View style={{ height: 20 }}></View>
           </ScrollView>
         </View>
-      </View>
+      </SafeAreaView>
     </InternetConnectionAlert>
   );
 };

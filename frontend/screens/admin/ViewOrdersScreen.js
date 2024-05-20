@@ -6,10 +6,11 @@ import {
   ScrollView,
   TouchableOpacity,
   RefreshControl,
+  SafeAreaView,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import { colors, network } from "../../constants";
-import { Ionicons } from "react-native-vector-icons";
+import Ionicons from "react-native-vector-icons/Ionicons";
 import CustomAlert from "../../components/CustomAlert/CustomAlert";
 import CustomInput from "../../components/CustomInput";
 import ProgressDialog from "react-native-progress-dialog";
@@ -107,57 +108,62 @@ const ViewOrdersScreen = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
-      <ProgressDialog visible={isloading} label={label} />
-      <StatusBar></StatusBar>
-      <View style={styles.TopBarContainer}>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.goBack();
-          }}
+      <SafeAreaView style={styles.container}>
+        <ProgressDialog visible={isloading} label={label} />
+        <StatusBar></StatusBar>
+        <View style={styles.TopBarContainer}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.goBack();
+            }}
+          >
+            <Ionicons
+              name="arrow-back-circle-outline"
+              size={30}
+              color={colors.muted}
+            />
+          </TouchableOpacity>
+        </View>
+        <View style={styles.screenNameContainer}>
+          <View>
+            <Text style={styles.screenNameText}>View Order</Text>
+          </View>
+          <View>
+            <Text style={styles.screenNameParagraph}>View all orders</Text>
+          </View>
+        </View>
+        <CustomAlert message={error} type={alertType} />
+        <CustomInput
+          radius={5}
+          placeholder={"Search..."}
+          value={filterItem}
+          setValue={setFilterItem}
+        />
+        <ScrollView
+          style={{ flex: 1, width: "100%", padding: 2 }}
+          showsVerticalScrollIndicator={false}
+          refreshControl={
+            <RefreshControl
+              refreshing={refeshing}
+              onRefresh={handleOnRefresh}
+            />
+          }
         >
-          <Ionicons
-            name="arrow-back-circle-outline"
-            size={30}
-            color={colors.muted}
-          />
-        </TouchableOpacity>
-      </View>
-      <View style={styles.screenNameContainer}>
-        <View>
-          <Text style={styles.screenNameText}>View Order</Text>
-        </View>
-        <View>
-          <Text style={styles.screenNameParagraph}>View all orders</Text>
-        </View>
-      </View>
-      <CustomAlert message={error} type={alertType} />
-      <CustomInput
-        radius={5}
-        placeholder={"Search..."}
-        value={filterItem}
-        setValue={setFilterItem}
-      />
-      <ScrollView
-        style={{ flex: 1, width: "100%", padding: 2 }}
-        showsVerticalScrollIndicator={false}
-        refreshControl={
-          <RefreshControl refreshing={refeshing} onRefresh={handleOnRefresh} />
-        }
-      >
-        {foundItems && foundItems.length == 0 ? (
-          <Text>{`No order found with the order # ${filterItem}!`}</Text>
-        ) : (
-          foundItems.map((order, index) => {
-            return (
-              <OrderList
-                item={order}
-                key={index}
-                onPress={() => handleOrderDetail(order)}
-              />
-            );
-          })
-        )}
-      </ScrollView>
+          {foundItems && foundItems.length == 0 ? (
+            <Text>{`No order found with the order # ${filterItem}!`}</Text>
+          ) : (
+            foundItems.map((order, index) => {
+              return (
+                <OrderList
+                  item={order}
+                  key={index}
+                  onPress={() => handleOrderDetail(order)}
+                />
+              );
+            })
+          )}
+        </ScrollView>
+      </SafeAreaView>
     </View>
   );
 };

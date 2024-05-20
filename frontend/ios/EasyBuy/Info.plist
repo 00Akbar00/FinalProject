@@ -3,7 +3,7 @@
 <plist version="1.0">
   <dict>
     <key>CADisableMinimumFrameDurationOnPhone</key>
-    <true/>
+    <true />
     <key>CFBundleDevelopmentRegion</key>
     <string>$(DEVELOPMENT_LANGUAGE)</string>
     <key>CFBundleDisplayName</key>
@@ -34,13 +34,13 @@
     <key>CFBundleVersion</key>
     <string>1</string>
     <key>LSRequiresIPhoneOS</key>
-    <true/>
+    <true />
     <key>NSAppTransportSecurity</key>
     <dict>
       <key>NSAllowsArbitraryLoads</key>
-      <false/>
+      <false />
       <key>NSAllowsLocalNetworking</key>
-      <true/>
+      <true />
     </dict>
     <key>NSCameraUsageDescription</key>
     <string>Allow $(PRODUCT_NAME) to access your camera</string>
@@ -57,7 +57,7 @@
       <string>armv7</string>
     </array>
     <key>UIRequiresFullScreen</key>
-    <false/>
+    <false />
     <key>UIStatusBarStyle</key>
     <string>UIStatusBarStyleDefault</string>
     <key>UISupportedInterfaceOrientations</key>
@@ -75,6 +75,28 @@
     <key>UIUserInterfaceStyle</key>
     <string>Light</string>
     <key>UIViewControllerBasedStatusBarAppearance</key>
-    <false/>
+    <false />
+    <key>UIAppFonts</key>
+    <array>
+      <string>AntDesign.ttf</string>
+      <string>Entypo.ttf</string>
+      <string>EvilIcons.ttf</string>
+      <string>Feather.ttf</string>
+      <string>FontAwesome.ttf</string>
+      <string>FontAwesome5_Brands.ttf</string>
+      <string>FontAwesome5_Regular.ttf</string>
+      <string>FontAwesome5_Solid.ttf</string>
+      <string>FontAwesome6_Brands.ttf</string>
+      <string>FontAwesome6_Regular.ttf</string>
+      <string>FontAwesome6_Solid.ttf</string>
+      <string>Foundation.ttf</string>
+      <string>Ionicons.ttf</string>
+      <string>MaterialIcons.ttf</string>
+      <string>MaterialCommunityIcons.ttf</string>
+      <string>SimpleLineIcons.ttf</string>
+      <string>Octicons.ttf</string>
+      <string>Zocial.ttf</string>
+      <string>Fontisto.ttf</string>
+    </array>
   </dict>
 </plist>

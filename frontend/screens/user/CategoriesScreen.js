@@ -8,10 +8,11 @@ import {
   FlatList,
   RefreshControl,
   Dimensions,
+  SafeAreaView,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 
-import { Ionicons } from "react-native-vector-icons";
+import Ionicons from "react-native-vector-icons/Ionicons";
 import cartIcon from "../../assets/icons/cart_beg.png";
 import emptyBox from "../../assets/image/emptybox.png";
 import { colors, network } from "../../constants";
@@ -150,124 +151,128 @@ const CategoriesScreen = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
-      <StatusBar></StatusBar>
-      <View style={styles.topBarContainer}>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.jumpTo("home");
-          }}
-        >
-          <Ionicons
-            name="arrow-back-circle-outline"
-            size={30}
-            color={colors.muted}
-          />
-        </TouchableOpacity>
+      <SafeAreaView style={styles.container}>
+        <StatusBar></StatusBar>
+        <View style={styles.topBarContainer}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.jumpTo("home");
+            }}
+          >
+            <Ionicons
+              name="arrow-back-circle-outline"
+              size={30}
+              color={colors.muted}
+            />
+          </TouchableOpacity>
 
-        <View></View>
-        <TouchableOpacity
-          style={styles.cartIconContainer}
-          onPress={() => navigation.navigate("cart")}
-        >
-          {cartproduct?.length > 0 ? (
-            <View style={styles.cartItemCountContainer}>
-              <Text style={styles.cartItemCountText}>{cartproduct.length}</Text>
+          <View></View>
+          <TouchableOpacity
+            style={styles.cartIconContainer}
+            onPress={() => navigation.navigate("cart")}
+          >
+            {cartproduct?.length > 0 ? (
+              <View style={styles.cartItemCountContainer}>
+                <Text style={styles.cartItemCountText}>
+                  {cartproduct.length}
+                </Text>
+              </View>
+            ) : (
+              <></>
+            )}
+            <Image source={cartIcon} />
+          </TouchableOpacity>
+        </View>
+        <View style={styles.bodyContainer}>
+          <View style={{ padding: 0, paddingLeft: 20, paddingRight: 20 }}>
+            <CustomInput
+              radius={5}
+              placeholder={"Search..."}
+              value={filterItem}
+              setValue={setFilterItem}
+            />
+          </View>
+          <FlatList
+            data={category}
+            keyExtractor={(index, item) => `${index}-${item}`}
+            horizontal
+            style={{ flexGrow: 0 }}
+            contentContainerStyle={{ padding: 10 }}
+            showsHorizontalScrollIndicator={false}
+            renderItem={({ item: tab }) => (
+              <CustomIconButton
+                key={tab}
+                text={tab.title}
+                image={tab.image}
+                active={selectedTab?.title === tab.title ? true : false}
+                onPress={() => {
+                  setSelectedTab(tab);
+                }}
+              />
+            )}
+          />
+
+          {foundItems.filter(
+            (product) => product?.category?._id === selectedTab?._id
+          ).length === 0 ? (
+            <View style={styles.noItemContainer}>
+              <View
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  backgroundColor: colors.white,
+                  height: 150,
+                  width: 150,
+                  borderRadius: 10,
+                }}
+              >
+                <Image
+                  source={emptyBox}
+                  style={{ height: 80, width: 80, resizeMode: "contain" }}
+                />
+                <Text style={styles.emptyBoxText}>
+                  There no product in this category
+                </Text>
+              </View>
             </View>
           ) : (
-            <></>
-          )}
-          <Image source={cartIcon} />
-        </TouchableOpacity>
-      </View>
-      <View style={styles.bodyContainer}>
-        <View style={{ padding: 0, paddingLeft: 20, paddingRight: 20 }}>
-          <CustomInput
-            radius={5}
-            placeholder={"Search..."}
-            value={filterItem}
-            setValue={setFilterItem}
-          />
-        </View>
-        <FlatList
-          data={category}
-          keyExtractor={(index, item) => `${index}-${item}`}
-          horizontal
-          style={{ flexGrow: 0 }}
-          contentContainerStyle={{ padding: 10 }}
-          showsHorizontalScrollIndicator={false}
-          renderItem={({ item: tab }) => (
-            <CustomIconButton
-              key={tab}
-              text={tab.title}
-              image={tab.image}
-              active={selectedTab?.title === tab.title ? true : false}
-              onPress={() => {
-                setSelectedTab(tab);
-              }}
+            <FlatList
+              data={foundItems.filter(
+                (product) => product?.category?._id === selectedTab?._id
+              )}
+              refreshControl={
+                <RefreshControl
+                  refreshing={refeshing}
+                  onRefresh={handleOnRefresh}
+                />
+              }
+              keyExtractor={(index, item) => `${index}-${item}`}
+              contentContainerStyle={{ margin: 10 }}
+              numColumns={2}
+              renderItem={({ item: product }) => (
+                <View
+                  style={[
+                    styles.productCartContainer,
+                    { width: (windowWidth - windowWidth * 0.1) / 2 },
+                  ]}
+                >
+                  <ProductCard
+                    cardSize={"large"}
+                    name={product.title}
+                    image={`${network.serverip}/uploads/${product.image}`}
+                    price={product.price}
+                    quantity={product.quantity}
+                    onPress={() => handleProductPress(product)}
+                    onPressSecondary={() => handleAddToCat(product)}
+                  />
+                  <View style={styles.emptyView}></View>
+                </View>
+              )}
             />
           )}
-        />
-
-        {foundItems.filter(
-          (product) => product?.category?._id === selectedTab?._id
-        ).length === 0 ? (
-          <View style={styles.noItemContainer}>
-            <View
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                backgroundColor: colors.white,
-                height: 150,
-                width: 150,
-                borderRadius: 10,
-              }}
-            >
-              <Image
-                source={emptyBox}
-                style={{ height: 80, width: 80, resizeMode: "contain" }}
-              />
-              <Text style={styles.emptyBoxText}>
-                There no product in this category
-              </Text>
-            </View>
-          </View>
-        ) : (
-          <FlatList
-            data={foundItems.filter(
-              (product) => product?.category?._id === selectedTab?._id
-            )}
-            refreshControl={
-              <RefreshControl
-                refreshing={refeshing}
-                onRefresh={handleOnRefresh}
-              />
-            }
-            keyExtractor={(index, item) => `${index}-${item}`}
-            contentContainerStyle={{ margin: 10 }}
-            numColumns={2}
-            renderItem={({ item: product }) => (
-              <View
-                style={[
-                  styles.productCartContainer,
-                  { width: (windowWidth - windowWidth * 0.1) / 2 },
-                ]}
-              >
-                <ProductCard
-                  cardSize={"large"}
-                  name={product.title}
-                  image={`${network.serverip}/uploads/${product.image}`}
-                  price={product.price}
-                  quantity={product.quantity}
-                  onPress={() => handleProductPress(product)}
-                  onPressSecondary={() => handleAddToCat(product)}
-                />
-                <View style={styles.emptyView}></View>
-              </View>
-            )}
-          />
-        )}
-      </View>
+        </View>
+      </SafeAreaView>
     </View>
   );
 };

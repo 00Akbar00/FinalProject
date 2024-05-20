@@ -6,8 +6,9 @@ import {
   Text,
   ScrollView,
   Modal,
+  SafeAreaView,
 } from "react-native";
-import { Ionicons } from "react-native-vector-icons";
+import Ionicons from "react-native-vector-icons/Ionicons";
 import React, { useState, useEffect } from "react";
 import BasicProductList from "../../components/BasicProductList/BasicProductList";
 import { colors, network } from "../../constants";
@@ -120,165 +121,167 @@ const CheckoutScreen = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
-      <StatusBar></StatusBar>
-      <ProgressDialog visible={isloading} label={"Placing Order..."} />
-      <View style={styles.topBarContainer}>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.goBack();
+      <SafeAreaView style={styles.container}>
+        <StatusBar></StatusBar>
+        <ProgressDialog visible={isloading} label={"Placing Order..."} />
+        <View style={styles.topBarContainer}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.goBack();
+            }}
+          >
+            <Ionicons
+              name="arrow-back-circle-outline"
+              size={30}
+              color={colors.muted}
+            />
+          </TouchableOpacity>
+          <View></View>
+          <View></View>
+        </View>
+        <ScrollView style={styles.bodyContainer} nestedScrollEnabled={true}>
+          <Text style={styles.primaryText}>Order Summary</Text>
+          <ScrollView
+            style={styles.orderSummaryContainer}
+            nestedScrollEnabled={true}
+          >
+            {cartproduct.map((product, index) => (
+              <BasicProductList
+                key={index}
+                title={product.title}
+                price={product.price}
+                quantity={product.quantity}
+              />
+            ))}
+          </ScrollView>
+          <Text style={styles.primaryText}>Total</Text>
+          <View style={styles.totalOrderInfoContainer}>
+            <View style={styles.list}>
+              <Text>Order</Text>
+              <Text>{totalCost}$</Text>
+            </View>
+            <View style={styles.list}>
+              <Text>Delivery</Text>
+              <Text>{deliveryCost}$</Text>
+            </View>
+            <View style={styles.list}>
+              <Text style={styles.primaryTextSm}>Total</Text>
+              <Text style={styles.secondaryTextSm}>
+                {totalCost + deliveryCost}$
+              </Text>
+            </View>
+          </View>
+          <Text style={styles.primaryText}>Contact</Text>
+          <View style={styles.listContainer}>
+            <View style={styles.list}>
+              <Text style={styles.secondaryTextSm}>Email</Text>
+              <Text style={styles.secondaryTextSm}>
+                bukhtyar.haider1@gmail.com
+              </Text>
+            </View>
+            <View style={styles.list}>
+              <Text style={styles.secondaryTextSm}>Phone</Text>
+              <Text style={styles.secondaryTextSm}>+92 3410988683</Text>
+            </View>
+          </View>
+          <Text style={styles.primaryText}>Address</Text>
+          <View style={styles.listContainer}>
+            <TouchableOpacity
+              style={styles.list}
+              onPress={() => setModalVisible(true)}
+            >
+              <Text style={styles.secondaryTextSm}>Address</Text>
+              <View>
+                {country || city || streetAddress != "" ? (
+                  <Text
+                    style={styles.secondaryTextSm}
+                    numberOfLines={1}
+                    ellipsizeMode="tail"
+                  >
+                    {address.length < 25
+                      ? `${address}`
+                      : `${address.substring(0, 25)}...`}
+                  </Text>
+                ) : (
+                  <Text style={styles.primaryTextSm}>Add</Text>
+                )}
+              </View>
+            </TouchableOpacity>
+          </View>
+          <Text style={styles.primaryText}>Payment</Text>
+          <View style={styles.listContainer}>
+            <View style={styles.list}>
+              <Text style={styles.secondaryTextSm}>Method</Text>
+              <Text style={styles.primaryTextSm}>Cash On Delivery</Text>
+            </View>
+          </View>
+
+          <View style={styles.emptyView}></View>
+        </ScrollView>
+        <View style={styles.buttomContainer}>
+          {country && city && streetAddress != "" ? (
+            <CustomButton
+              text={"Submit Order"}
+              // onPress={() => navigation.replace("orderconfirm")}
+              onPress={() => {
+                handleCheckout();
+              }}
+            />
+          ) : (
+            <CustomButton text={"Submit Order"} disabled />
+          )}
+        </View>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            setModalVisible(!modalVisible);
           }}
         >
-          <Ionicons
-            name="arrow-back-circle-outline"
-            size={30}
-            color={colors.muted}
-          />
-        </TouchableOpacity>
-        <View></View>
-        <View></View>
-      </View>
-      <ScrollView style={styles.bodyContainer} nestedScrollEnabled={true}>
-        <Text style={styles.primaryText}>Order Summary</Text>
-        <ScrollView
-          style={styles.orderSummaryContainer}
-          nestedScrollEnabled={true}
-        >
-          {cartproduct.map((product, index) => (
-            <BasicProductList
-              key={index}
-              title={product.title}
-              price={product.price}
-              quantity={product.quantity}
-            />
-          ))}
-        </ScrollView>
-        <Text style={styles.primaryText}>Total</Text>
-        <View style={styles.totalOrderInfoContainer}>
-          <View style={styles.list}>
-            <Text>Order</Text>
-            <Text>{totalCost}$</Text>
-          </View>
-          <View style={styles.list}>
-            <Text>Delivery</Text>
-            <Text>{deliveryCost}$</Text>
-          </View>
-          <View style={styles.list}>
-            <Text style={styles.primaryTextSm}>Total</Text>
-            <Text style={styles.secondaryTextSm}>
-              {totalCost + deliveryCost}$
-            </Text>
-          </View>
-        </View>
-        <Text style={styles.primaryText}>Contact</Text>
-        <View style={styles.listContainer}>
-          <View style={styles.list}>
-            <Text style={styles.secondaryTextSm}>Email</Text>
-            <Text style={styles.secondaryTextSm}>
-              bukhtyar.haider1@gmail.com
-            </Text>
-          </View>
-          <View style={styles.list}>
-            <Text style={styles.secondaryTextSm}>Phone</Text>
-            <Text style={styles.secondaryTextSm}>+92 3410988683</Text>
-          </View>
-        </View>
-        <Text style={styles.primaryText}>Address</Text>
-        <View style={styles.listContainer}>
-          <TouchableOpacity
-            style={styles.list}
-            onPress={() => setModalVisible(true)}
-          >
-            <Text style={styles.secondaryTextSm}>Address</Text>
-            <View>
-              {country || city || streetAddress != "" ? (
-                <Text
-                  style={styles.secondaryTextSm}
-                  numberOfLines={1}
-                  ellipsizeMode="tail"
-                >
-                  {address.length < 25
-                    ? `${address}`
-                    : `${address.substring(0, 25)}...`}
-                </Text>
+          <View style={styles.modelBody}>
+            <View style={styles.modelAddressContainer}>
+              <CustomInput
+                value={country}
+                setValue={setCountry}
+                placeholder={"Enter Country"}
+              />
+              <CustomInput
+                value={city}
+                setValue={setCity}
+                placeholder={"Enter City"}
+              />
+              <CustomInput
+                value={streetAddress}
+                setValue={setStreetAddress}
+                placeholder={"Enter Street Address"}
+              />
+              <CustomInput
+                value={zipcode}
+                setValue={setZipcode}
+                placeholder={"Enter ZipCode"}
+                keyboardType={"number-pad"}
+              />
+              {streetAddress || city || country != "" ? (
+                <CustomButton
+                  onPress={() => {
+                    setModalVisible(!modalVisible);
+                    setAddress(`${streetAddress}, ${city},${country}`);
+                  }}
+                  text={"save"}
+                />
               ) : (
-                <Text style={styles.primaryTextSm}>Add</Text>
+                <CustomButton
+                  onPress={() => {
+                    setModalVisible(!modalVisible);
+                  }}
+                  text={"close"}
+                />
               )}
             </View>
-          </TouchableOpacity>
-        </View>
-        <Text style={styles.primaryText}>Payment</Text>
-        <View style={styles.listContainer}>
-          <View style={styles.list}>
-            <Text style={styles.secondaryTextSm}>Method</Text>
-            <Text style={styles.primaryTextSm}>Cash On Delivery</Text>
           </View>
-        </View>
-
-        <View style={styles.emptyView}></View>
-      </ScrollView>
-      <View style={styles.buttomContainer}>
-        {country && city && streetAddress != "" ? (
-          <CustomButton
-            text={"Submit Order"}
-            // onPress={() => navigation.replace("orderconfirm")}
-            onPress={() => {
-              handleCheckout();
-            }}
-          />
-        ) : (
-          <CustomButton text={"Submit Order"} disabled />
-        )}
-      </View>
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          setModalVisible(!modalVisible);
-        }}
-      >
-        <View style={styles.modelBody}>
-          <View style={styles.modelAddressContainer}>
-            <CustomInput
-              value={country}
-              setValue={setCountry}
-              placeholder={"Enter Country"}
-            />
-            <CustomInput
-              value={city}
-              setValue={setCity}
-              placeholder={"Enter City"}
-            />
-            <CustomInput
-              value={streetAddress}
-              setValue={setStreetAddress}
-              placeholder={"Enter Street Address"}
-            />
-            <CustomInput
-              value={zipcode}
-              setValue={setZipcode}
-              placeholder={"Enter ZipCode"}
-              keyboardType={"number-pad"}
-            />
-            {streetAddress || city || country != "" ? (
-              <CustomButton
-                onPress={() => {
-                  setModalVisible(!modalVisible);
-                  setAddress(`${streetAddress}, ${city},${country}`);
-                }}
-                text={"save"}
-              />
-            ) : (
-              <CustomButton
-                onPress={() => {
-                  setModalVisible(!modalVisible);
-                }}
-                text={"close"}
-              />
-            )}
-          </View>
-        </View>
-      </Modal>
+        </Modal>
+      </SafeAreaView>
     </View>
   );
 };

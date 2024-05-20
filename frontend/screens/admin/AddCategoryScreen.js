@@ -7,14 +7,14 @@ import {
   KeyboardAvoidingView,
   ScrollView,
   TouchableOpacity,
+  SafeAreaView,
 } from "react-native";
 import React, { useState } from "react";
 import { colors, network } from "../../constants";
 import CustomInput from "../../components/CustomInput";
 import CustomButton from "../../components/CustomButton";
-import { Ionicons } from "react-native-vector-icons";
+import Ionicons from "react-native-vector-icons/Ionicons";
 import CustomAlert from "../../components/CustomAlert/CustomAlert";
-// import * as ImagePicker from "expo-image-picker";
 import ProgressDialog from "react-native-progress-dialog";
 
 const AddCategoryScreen = ({ navigation, route }) => {
@@ -93,57 +93,59 @@ const AddCategoryScreen = ({ navigation, route }) => {
 
   return (
     <KeyboardAvoidingView style={styles.container}>
-      <StatusBar></StatusBar>
-      <ProgressDialog visible={isloading} label={"Adding ..."} />
-      <View style={styles.TopBarContainer}>
-        <TouchableOpacity
-          onPress={() => {
-            // navigation.replace("viewproduct", { authUser: authUser });
-            navigation.goBack();
-          }}
+      <SafeAreaView style={styles.container}>
+        <StatusBar translucent />
+        <ProgressDialog visible={isloading} label={"Adding ..."} />
+        <View style={styles.TopBarContainer}>
+          <TouchableOpacity
+            onPress={() => {
+              // navigation.replace("viewproduct", { authUser: authUser });
+              navigation.goBack();
+            }}
+          >
+            <Ionicons
+              name="arrow-back-circle-outline"
+              size={30}
+              color={colors.muted}
+            />
+          </TouchableOpacity>
+        </View>
+        <View style={styles.screenNameContainer}>
+          <View>
+            <Text style={styles.screenNameText}>Add Category</Text>
+          </View>
+          <View>
+            <Text style={styles.screenNameParagraph}>Add category details</Text>
+          </View>
+        </View>
+        <CustomAlert message={error} type={alertType} />
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          style={{ flex: 1, width: "100%" }}
         >
-          <Ionicons
-            name="arrow-back-circle-outline"
-            size={30}
-            color={colors.muted}
-          />
-        </TouchableOpacity>
-      </View>
-      <View style={styles.screenNameContainer}>
-        <View>
-          <Text style={styles.screenNameText}>Add Category</Text>
-        </View>
-        <View>
-          <Text style={styles.screenNameParagraph}>Add category details</Text>
-        </View>
-      </View>
-      <CustomAlert message={error} type={alertType} />
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        style={{ flex: 1, width: "100%" }}
-      >
-        <View style={styles.formContainer}>
-          <CustomInput
-            value={title}
-            setValue={setTitle}
-            placeholder={"Title"}
-            placeholderTextColor={colors.muted}
-            radius={5}
-          />
+          <View style={styles.formContainer}>
+            <CustomInput
+              value={title}
+              setValue={setTitle}
+              placeholder={"Title"}
+              placeholderTextColor={colors.muted}
+              radius={5}
+            />
 
-          <CustomInput
-            value={description}
-            setValue={setDescription}
-            placeholder={"Description"}
-            placeholderTextColor={colors.muted}
-            radius={5}
-          />
-        </View>
-      </ScrollView>
+            <CustomInput
+              value={description}
+              setValue={setDescription}
+              placeholder={"Description"}
+              placeholderTextColor={colors.muted}
+              radius={5}
+            />
+          </View>
+        </ScrollView>
 
-      <View style={styles.buttomContainer}>
-        <CustomButton text={"Add Category"} onPress={addCategoryHandle} />
-      </View>
+        <View style={styles.buttomContainer}>
+          <CustomButton text={"Add Category"} onPress={addCategoryHandle} />
+        </View>
+      </SafeAreaView>
     </KeyboardAvoidingView>
   );
 };

@@ -7,16 +7,17 @@ import {
   KeyboardAvoidingView,
   ScrollView,
   TouchableOpacity,
+  SafeAreaView,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { colors, network } from "../../constants";
 import CustomInput from "../../components/CustomInput";
 import CustomButton from "../../components/CustomButton";
-import { Ionicons } from "react-native-vector-icons";
+import Ionicons from "react-native-vector-icons/Ionicons";
 import CustomAlert from "../../components/CustomAlert/CustomAlert";
-// import * as ImagePicker from "expo-image-picker";
 import ProgressDialog from "react-native-progress-dialog";
-import { AntDesign } from "react-native-vector-icons";
+import AntDesign from "react-native-vector-icons/AntDesign";
+import { launchImageLibrary } from "react-native-image-picker";
 
 const EditProductScreen = ({ navigation, route }) => {
   const { product, authUser } = route.params;
@@ -56,10 +57,8 @@ const EditProductScreen = ({ navigation, route }) => {
   //Method for selecting the image from device gallery
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [1, 1],
+    let result = await launchImageLibrary({
+      mediaTypes: "photo",
       quality: 0.5,
     });
     console.log(result);
@@ -110,7 +109,7 @@ const EditProductScreen = ({ navigation, route }) => {
 
   // set all the input fields and image on initial render
   useEffect(() => {
-    setImage(`${network.serverip}/uploads/${product?.image}`);
+    setImage(product?.image);
     setTitle(product.title);
     setSku(product.sku);
     setQuantity(product.quantity.toString());
@@ -120,89 +119,97 @@ const EditProductScreen = ({ navigation, route }) => {
 
   return (
     <KeyboardAvoidingView style={styles.container}>
-      <StatusBar></StatusBar>
-      <ProgressDialog visible={isloading} label={label} />
-      <View style={styles.TopBarContainer}>
-        <TouchableOpacity
-          onPress={() => {
-            // navigation.replace("viewproduct", { authUser: authUser });
-            navigation.goBack();
-          }}
-        >
-          <Ionicons
-            name="arrow-back-circle-outline"
-            size={30}
-            color={colors.muted}
-          />
-        </TouchableOpacity>
-      </View>
-      <View style={styles.screenNameContainer}>
-        <View>
-          <Text style={styles.screenNameText}>Edit Product</Text>
+      <SafeAreaView style={styles.container}>
+        <StatusBar translucent />
+        <ProgressDialog visible={isloading} label={label} />
+        <View style={styles.TopBarContainer}>
+          <TouchableOpacity
+            onPress={() => {
+              // navigation.replace("viewproduct", { authUser: authUser });
+              navigation.goBack();
+            }}
+          >
+            <Ionicons
+              name="arrow-back-circle-outline"
+              size={30}
+              color={colors.muted}
+            />
+          </TouchableOpacity>
         </View>
-        <View>
-          <Text style={styles.screenNameParagraph}>Edit product details</Text>
-        </View>
-      </View>
-      <CustomAlert message={error} type={"error"} />
-      <ScrollView style={{ flex: 1, width: "100%" }}>
-        <View style={styles.formContainer}>
-          <View style={styles.imageContainer}>
-            {image ? (
-              <TouchableOpacity style={styles.imageHolder} onPress={pickImage}>
-                <Image
-                  source={{ uri: image }}
-                  style={{ width: 200, height: 200 }}
-                />
-              </TouchableOpacity>
-            ) : (
-              <TouchableOpacity style={styles.imageHolder} onPress={pickImage}>
-                <AntDesign name="pluscircle" size={50} color={colors.muted} />
-              </TouchableOpacity>
-            )}
+        <View style={styles.screenNameContainer}>
+          <View>
+            <Text style={styles.screenNameText}>Edit Product</Text>
           </View>
-          <CustomInput
-            value={sku}
-            setValue={setSku}
-            placeholder={"SKU"}
-            placeholderTextColor={colors.muted}
-            radius={5}
-          />
-          <CustomInput
-            value={title}
-            setValue={setTitle}
-            placeholder={"Title"}
-            placeholderTextColor={colors.muted}
-            radius={5}
-          />
-          <CustomInput
-            value={price}
-            setValue={setPrice}
-            placeholder={"Price"}
-            keyboardType={"number-pad"}
-            placeholderTextColor={colors.muted}
-            radius={5}
-          />
-          <CustomInput
-            value={quantity}
-            setValue={setQuantity}
-            placeholder={"Quantity"}
-            keyboardType={"number-pad"}
-            placeholderTextColor={colors.muted}
-            radius={5}
-          />
-          <CustomInput
-            value={description}
-            setValue={setDescription}
-            placeholder={"Description"}
-            placeholderTextColor={colors.muted}
-            radius={5}
-          />
+          <View>
+            <Text style={styles.screenNameParagraph}>Edit product details</Text>
+          </View>
         </View>
-      </ScrollView>
-      <View style={styles.buttomContainer}>
-        <CustomButton text={"Edit Product"} onPress={editProductHandle} />
-      </View>
+        <CustomAlert message={error} type={"error"} />
+        <ScrollView style={{ flex: 1, width: "100%" }}>
+          <View style={styles.formContainer}>
+            <View style={styles.imageContainer}>
+              {image ? (
+                <TouchableOpacity
+                  style={styles.imageHolder}
+                  onPress={pickImage}
+                >
+                  <Image
+                    source={{ uri: image }}
+                    style={{ width: 200, height: 200 }}
+                  />
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity
+                  style={styles.imageHolder}
+                  onPress={pickImage}
+                >
+                  <AntDesign name="pluscircle" size={50} color={colors.muted} />
+                </TouchableOpacity>
+              )}
+            </View>
+            <CustomInput
+              value={sku}
+              setValue={setSku}
+              placeholder={"SKU"}
+              placeholderTextColor={colors.muted}
+              radius={5}
+            />
+            <CustomInput
+              value={title}
+              setValue={setTitle}
+              placeholder={"Title"}
+              placeholderTextColor={colors.muted}
+              radius={5}
+            />
+            <CustomInput
+              value={price}
+              setValue={setPrice}
+              placeholder={"Price"}
+              keyboardType={"number-pad"}
+              placeholderTextColor={colors.muted}
+              radius={5}
+            />
+            <CustomInput
+              value={quantity}
+              setValue={setQuantity}
+              placeholder={"Quantity"}
+              keyboardType={"number-pad"}
+              placeholderTextColor={colors.muted}
+              radius={5}
+            />
+            <CustomInput
+              value={description}
+              setValue={setDescription}
+              placeholder={"Description"}
+              placeholderTextColor={colors.muted}
+              radius={5}
+            />
+          </View>
+        </ScrollView>
+        <View style={styles.buttomContainer}>
+          <CustomButton text={"Edit Product"} onPress={editProductHandle} />
+        </View>
+      </SafeAreaView>
     </KeyboardAvoidingView>
   );
 };

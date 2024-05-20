@@ -5,10 +5,11 @@ import {
   View,
   ScrollView,
   TouchableOpacity,
+  SafeAreaView,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import { colors, network } from "../../constants";
-import { Ionicons } from "react-native-vector-icons";
+import Ionicons from "react-native-vector-icons/Ionicons";
 import CustomAlert from "../../components/CustomAlert/CustomAlert";
 import ProgressDialog from "react-native-progress-dialog";
 import BasicProductList from "../../components/BasicProductList/BasicProductList";
@@ -122,137 +123,139 @@ const ViewOrderDetailScreen = ({ navigation, route }) => {
   }, []);
   return (
     <View style={styles.container}>
-      <ProgressDialog visible={isloading} label={label} />
-      <StatusBar></StatusBar>
-      <View style={styles.TopBarContainer}>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.goBack();
-          }}
-        >
-          <Ionicons
-            name="arrow-back-circle-outline"
-            size={30}
-            color={colors.muted}
-          />
-        </TouchableOpacity>
-      </View>
-      <View style={styles.screenNameContainer}>
-        <View>
-          <Text style={styles.screenNameText}>Order Details</Text>
-        </View>
-        <View>
-          <Text style={styles.screenNameParagraph}>
-            View all detail about order
-          </Text>
-        </View>
-      </View>
-      <CustomAlert message={error} type={alertType} />
-      <ScrollView
-        style={styles.bodyContainer}
-        showsVerticalScrollIndicator={false}
-      >
-        <View style={styles.containerNameContainer}>
-          <View>
-            <Text style={styles.containerNameText}>Ship & Bill to</Text>
-          </View>
-        </View>
-        <View style={styles.ShipingInfoContainer}>
-          <Text style={styles.secondarytextMedian}>
-            {orderDetail?.user?.name}
-          </Text>
-          <Text style={styles.secondarytextMedian}>
-            {orderDetail?.user?.email}
-          </Text>
-          <Text style={styles.secondarytextSm}>{address}</Text>
-          <Text style={styles.secondarytextSm}>{orderDetail?.zipcode}</Text>
-        </View>
-        <View>
-          <Text style={styles.containerNameText}>Order Info</Text>
-        </View>
-        <View style={styles.orderInfoContainer}>
-          <Text style={styles.secondarytextMedian}>
-            Order # {orderDetail?.orderId}
-          </Text>
-          <Text style={styles.secondarytextSm}>
-            Ordered on {dateFormat(orderDetail?.updatedAt)}
-          </Text>
-          {orderDetail?.shippedOn && (
-            <Text style={styles.secondarytextSm}>
-              Shipped on {orderDetail?.shippedOn}
-            </Text>
-          )}
-          {orderDetail?.deliveredOn && (
-            <Text style={styles.secondarytextSm}>
-              Delivered on {orderDetail?.deliveredOn}
-            </Text>
-          )}
-        </View>
-        <View style={styles.containerNameContainer}>
-          <View>
-            <Text style={styles.containerNameText}>Package Details</Text>
-          </View>
-        </View>
-        <View style={styles.orderItemsContainer}>
-          <View style={styles.orderItemContainer}>
-            <Text style={styles.orderItemText}>Package</Text>
-            <Text>{value}</Text>
-          </View>
-          <View style={styles.orderItemContainer}>
-            <Text style={styles.orderItemText}>
-              Order on : {dateFormat(orderDetail?.updatedAt)}
-            </Text>
-          </View>
-          <ScrollView
-            style={styles.orderSummaryContainer}
-            nestedScrollEnabled={true}
-          >
-            {orderDetail?.items.map((product, index) => (
-              <View key={index}>
-                <BasicProductList
-                  title={product?.productId?.title}
-                  price={product?.price}
-                  quantity={product?.quantity}
-                />
-              </View>
-            ))}
-          </ScrollView>
-          <View style={styles.orderItemContainer}>
-            <Text style={styles.orderItemText}>Total</Text>
-            <Text>{totalCost}$</Text>
-          </View>
-        </View>
-        <View style={styles.emptyView}></View>
-      </ScrollView>
-      <View style={styles.bottomContainer}>
-        <View>
-          <DropDownPicker
-            style={{ width: 200 }}
-            open={open}
-            value={value}
-            items={items}
-            setOpen={setOpen}
-            setValue={setValue}
-            setItems={setItems}
-            disabled={statusDisable}
-            disabledStyle={{
-              backgroundColor: colors.light,
-              borderColor: colors.white,
+      <SafeAreaView style={styles.container}>
+        <ProgressDialog visible={isloading} label={label} />
+        <StatusBar></StatusBar>
+        <View style={styles.TopBarContainer}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.goBack();
             }}
-            labelStyle={{ color: colors.muted }}
-          />
-        </View>
-        <View>
-          {statusDisable == false ? (
-            <CustomButton
-              text={"Update"}
-              onPress={() => handleUpdateStatus(orderDetail?._id)}
+          >
+            <Ionicons
+              name="arrow-back-circle-outline"
+              size={30}
+              color={colors.muted}
             />
-          ) : (
-            <CustomButton text={"Update"} disabled />
-          )}
+          </TouchableOpacity>
         </View>
-      </View>
+        <View style={styles.screenNameContainer}>
+          <View>
+            <Text style={styles.screenNameText}>Order Details</Text>
+          </View>
+          <View>
+            <Text style={styles.screenNameParagraph}>
+              View all detail about order
+            </Text>
+          </View>
+        </View>
+        <CustomAlert message={error} type={alertType} />
+        <ScrollView
+          style={styles.bodyContainer}
+          showsVerticalScrollIndicator={false}
+        >
+          <View style={styles.containerNameContainer}>
+            <View>
+              <Text style={styles.containerNameText}>Ship & Bill to</Text>
+            </View>
+          </View>
+          <View style={styles.ShipingInfoContainer}>
+            <Text style={styles.secondarytextMedian}>
+              {orderDetail?.user?.name}
+            </Text>
+            <Text style={styles.secondarytextMedian}>
+              {orderDetail?.user?.email}
+            </Text>
+            <Text style={styles.secondarytextSm}>{address}</Text>
+            <Text style={styles.secondarytextSm}>{orderDetail?.zipcode}</Text>
+          </View>
+          <View>
+            <Text style={styles.containerNameText}>Order Info</Text>
+          </View>
+          <View style={styles.orderInfoContainer}>
+            <Text style={styles.secondarytextMedian}>
+              Order # {orderDetail?.orderId}
+            </Text>
+            <Text style={styles.secondarytextSm}>
+              Ordered on {dateFormat(orderDetail?.updatedAt)}
+            </Text>
+            {orderDetail?.shippedOn && (
+              <Text style={styles.secondarytextSm}>
+                Shipped on {orderDetail?.shippedOn}
+              </Text>
+            )}
+            {orderDetail?.deliveredOn && (
+              <Text style={styles.secondarytextSm}>
+                Delivered on {orderDetail?.deliveredOn}
+              </Text>
+            )}
+          </View>
+          <View style={styles.containerNameContainer}>
+            <View>
+              <Text style={styles.containerNameText}>Package Details</Text>
+            </View>
+          </View>
+          <View style={styles.orderItemsContainer}>
+            <View style={styles.orderItemContainer}>
+              <Text style={styles.orderItemText}>Package</Text>
+              <Text>{value}</Text>
+            </View>
+            <View style={styles.orderItemContainer}>
+              <Text style={styles.orderItemText}>
+                Order on : {dateFormat(orderDetail?.updatedAt)}
+              </Text>
+            </View>
+            <ScrollView
+              style={styles.orderSummaryContainer}
+              nestedScrollEnabled={true}
+            >
+              {orderDetail?.items.map((product, index) => (
+                <View key={index}>
+                  <BasicProductList
+                    title={product?.productId?.title}
+                    price={product?.price}
+                    quantity={product?.quantity}
+                  />
+                </View>
+              ))}
+            </ScrollView>
+            <View style={styles.orderItemContainer}>
+              <Text style={styles.orderItemText}>Total</Text>
+              <Text>{totalCost}$</Text>
+            </View>
+          </View>
+          <View style={styles.emptyView}></View>
+        </ScrollView>
+        <View style={styles.bottomContainer}>
+          <View>
+            <DropDownPicker
+              style={{ width: 200 }}
+              open={open}
+              value={value}
+              items={items}
+              setOpen={setOpen}
+              setValue={setValue}
+              setItems={setItems}
+              disabled={statusDisable}
+              disabledStyle={{
+                backgroundColor: colors.light,
+                borderColor: colors.white,
+              }}
+              labelStyle={{ color: colors.muted }}
+            />
+          </View>
+          <View>
+            {statusDisable == false ? (
+              <CustomButton
+                text={"Update"}
+                onPress={() => handleUpdateStatus(orderDetail?._id)}
+              />
+            ) : (
+              <CustomButton text={"Update"} disabled />
+            )}
+          </View>
+        </View>
+      </SafeAreaView>
     </View>
   );
 };

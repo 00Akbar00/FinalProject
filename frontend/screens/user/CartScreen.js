@@ -6,14 +6,15 @@ import {
   StatusBar,
   Text,
   ScrollView,
+  SafeAreaView,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import { Ionicons } from "react-native-vector-icons";
+import Ionicons from "react-native-vector-icons/Ionicons";
 import cartIcon from "../../assets/icons/cart_beg_active.png";
 import { colors, network } from "../../constants";
 import CartProductList from "../../components/CartProductList/CartProductList";
 import CustomButton from "../../components/CustomButton";
-import { MaterialIcons } from "react-native-vector-icons";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { useSelector, useDispatch } from "react-redux";
 import * as actionCreaters from "../../states/actionCreaters/actionCreaters";
 import { bindActionCreators } from "redux";
@@ -59,96 +60,98 @@ const CartScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <StatusBar></StatusBar>
-      <View style={styles.topBarContainer}>
-        <View style={styles.cartInfoContainerTopBar}>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.goBack();
-            }}
-          >
-            <Ionicons
-              name="arrow-back-circle-outline"
-              size={30}
-              color={colors.muted}
-            />
-          </TouchableOpacity>
-          <View style={styles.cartInfoTopBar}>
-            <Text>Your Cart</Text>
-            <Text>{cartproduct.length} Items</Text>
+      <SafeAreaView style={styles.container}>
+        <StatusBar></StatusBar>
+        <View style={styles.topBarContainer}>
+          <View style={styles.cartInfoContainerTopBar}>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.goBack();
+              }}
+            >
+              <Ionicons
+                name="arrow-back-circle-outline"
+                size={30}
+                color={colors.muted}
+              />
+            </TouchableOpacity>
+            <View style={styles.cartInfoTopBar}>
+              <Text>Your Cart</Text>
+              <Text>{cartproduct.length} Items</Text>
+            </View>
           </View>
-        </View>
 
-        <View></View>
-        <TouchableOpacity>
-          <Image source={cartIcon} />
-        </TouchableOpacity>
-      </View>
-      {cartproduct.length === 0 ? (
-        <View style={styles.cartProductListContiainerEmpty}>
-          {/* <Image
+          <View></View>
+          <TouchableOpacity>
+            <Image source={cartIcon} />
+          </TouchableOpacity>
+        </View>
+        {cartproduct.length === 0 ? (
+          <View style={styles.cartProductListContiainerEmpty}>
+            {/* <Image
             source={CartEmpty}
             style={{ height: 400, resizeMode: "contain" }}
           /> */}
-          <Text style={styles.secondaryTextSmItalic}>"Cart is empty"</Text>
-        </View>
-      ) : (
-        <ScrollView style={styles.cartProductListContiainer}>
-          {cartproduct.map((item, index) => (
-            <CartProductList
-              key={index}
-              index={index}
-              image={`${network.serverip}/uploads/${item.image}`}
-              title={item.title}
-              price={item.price}
-              quantity={item.quantity}
-              onPressIncrement={() => {
-                increaseQuantity(
-                  item._id,
-                  item.quantity,
-                  item.avaiableQuantity
-                );
-              }}
-              onPressDecrement={() => {
-                decreaseQuantity(item._id, item.quantity);
-              }}
-              handleDelete={() => {
-                deleteItem(item._id);
-              }}
-            />
-          ))}
-          <View style={styles.emptyView}></View>
-        </ScrollView>
-      )}
-      <View style={styles.cartBottomContainer}>
-        <View style={styles.cartBottomLeftContainer}>
-          <View style={styles.IconContainer}>
-            <MaterialIcons
-              name="featured-play-list"
-              size={24}
-              color={colors.primary}
-            />
+            <Text style={styles.secondaryTextSmItalic}>"Cart is empty"</Text>
           </View>
-          <View>
-            <Text style={styles.cartBottomPrimaryText}>Total</Text>
-            <Text style={styles.cartBottomSecondaryText}>{totalPrice}$</Text>
+        ) : (
+          <ScrollView style={styles.cartProductListContiainer}>
+            {cartproduct.map((item, index) => (
+              <CartProductList
+                key={index}
+                index={index}
+                image={`${item.image}`}
+                title={item.title}
+                price={item.price}
+                quantity={item.quantity}
+                onPressIncrement={() => {
+                  increaseQuantity(
+                    item._id,
+                    item.quantity,
+                    item.avaiableQuantity
+                  );
+                }}
+                onPressDecrement={() => {
+                  decreaseQuantity(item._id, item.quantity);
+                }}
+                handleDelete={() => {
+                  deleteItem(item._id);
+                }}
+              />
+            ))}
+            <View style={styles.emptyView}></View>
+          </ScrollView>
+        )}
+        <View style={styles.cartBottomContainer}>
+          <View style={styles.cartBottomLeftContainer}>
+            <View style={styles.IconContainer}>
+              <MaterialIcons
+                name="featured-play-list"
+                size={24}
+                color={colors.primary}
+              />
+            </View>
+            <View>
+              <Text style={styles.cartBottomPrimaryText}>Total</Text>
+              <Text style={styles.cartBottomSecondaryText}>{totalPrice}$</Text>
+            </View>
+          </View>
+          <View style={styles.cartBottomRightContainer}>
+            {cartproduct.length > 0 ? (
+              <CustomButton
+                text={"Checkout"}
+                onPress={() => navigation.navigate("checkout")}
+              />
+            ) : (
+              <CustomButton
+                text={"Checkout"}
+                disabled={true}
+                onPress={() => navigation.navigate("checkout")}
+              />
+            )}
           </View>
         </View>
-        <View style={styles.cartBottomRightContainer}>
-          {cartproduct.length > 0 ? (
-            <CustomButton
-              text={"Checkout"}
-              onPress={() => navigation.navigate("checkout")}
-            />
-          ) : (
-            <CustomButton
-              text={"Checkout"}
-              disabled={true}
-              onPress={() => navigation.navigate("checkout")}
-            />
-          )}
-        </View>
-      </View>
+      </SafeAreaView>
     </View>
   );
 };

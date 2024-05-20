@@ -1,19 +1,17 @@
 const userModel = require("../../models/user");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken")
-const JWT_SECRET_KEY = process.env.TOKEN_KEY
+const JWT_SECRET_KEY = '=seceret'
 
 function generateAuthToken(data){
-  const token = jwt.sign(data, JWT_SECRET_KEY, { expiresIn: '10h' })
+  const token = jwt.sign(data, 'seceret', { expiresIn: '10h' })
   return token
 }
 
 module.exports.login = async (req, res) => {
   try {
-
     const { email, password } = req.body;
     let user = await userModel.findOne({ email });
-
     if (!user) {
       return res.json({
         success: true,
@@ -21,14 +19,11 @@ module.exports.login = async (req, res) => {
         message: "user does not exist with this email and password",
       });
     }
-
     // bcrypting the password and comparing with the one in db
     if (await bcrypt.compare(password, user.password)) {
-
       const token = generateAuthToken({_id : user?._id, email : email})
       user.token = token
       user.save()
-
       return res.json({
         success: true,
         status: 200,

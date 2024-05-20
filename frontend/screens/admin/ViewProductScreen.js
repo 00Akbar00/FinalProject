@@ -7,11 +7,12 @@ import {
   TouchableOpacity,
   RefreshControl,
   Alert,
+  SafeAreaView,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import { colors, network } from "../../constants";
-import { Ionicons } from "react-native-vector-icons";
-import { AntDesign } from "react-native-vector-icons";
+import Ionicons from "react-native-vector-icons/Ionicons";
+import AntDesign from "react-native-vector-icons/AntDesign";
 import ProductList from "../../components/ProductList/ProductList";
 import CustomAlert from "../../components/CustomAlert/CustomAlert";
 import CustomInput from "../../components/CustomInput/";
@@ -141,79 +142,84 @@ const ViewProductScreen = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
-      <ProgressDialog visible={isloading} label={label} />
-      <StatusBar></StatusBar>
-      <View style={styles.TopBarContainer}>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.goBack();
-          }}
-        >
-          <Ionicons
-            name="arrow-back-circle-outline"
-            size={30}
-            color={colors.muted}
-          />
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate("addproduct", { authUser: authUser });
-          }}
-        >
-          <AntDesign name="plussquare" size={30} color={colors.muted} />
-        </TouchableOpacity>
-      </View>
-      <View style={styles.screenNameContainer}>
-        <View>
-          <Text style={styles.screenNameText}>View Product</Text>
+      <SafeAreaView style={styles.container}>
+        <ProgressDialog visible={isloading} label={label} />
+        <StatusBar></StatusBar>
+        <View style={styles.TopBarContainer}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.goBack();
+            }}
+          >
+            <Ionicons
+              name="arrow-back-circle-outline"
+              size={30}
+              color={colors.muted}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("addproduct", { authUser: authUser });
+            }}
+          >
+            <AntDesign name="plussquare" size={30} color={colors.muted} />
+          </TouchableOpacity>
         </View>
-        <View>
-          <Text style={styles.screenNameParagraph}>View all products</Text>
+        <View style={styles.screenNameContainer}>
+          <View>
+            <Text style={styles.screenNameText}>View Product</Text>
+          </View>
+          <View>
+            <Text style={styles.screenNameParagraph}>View all products</Text>
+          </View>
         </View>
-      </View>
-      <CustomAlert message={error} type={alertType} />
-      <CustomInput
-        radius={5}
-        placeholder={"Search..."}
-        value={filterItem}
-        setValue={setFilterItem}
-      />
-      <ScrollView
-        style={{ flex: 1, width: "100%" }}
-        showsVerticalScrollIndicator={false}
-        refreshControl={
-          <RefreshControl refreshing={refeshing} onRefresh={handleOnRefresh} />
-        }
-      >
-        {foundItems && foundItems.length == 0 ? (
-          <Text>{`No product found with the name of ${filterItem}!`}</Text>
-        ) : (
-          foundItems.map((product, index) => {
-            return (
-              <ProductList
-                key={index}
-                image={`${network.serverip}/uploads/${product?.image}`}
-                title={product?.title}
-                category={product?.category?.title}
-                price={product?.price}
-                qantity={product?.sku}
-                onPressView={() => {
-                  console.log("view is working " + product._id);
-                }}
-                onPressEdit={() => {
-                  navigation.navigate("editproduct", {
-                    product: product,
-                    authUser: authUser,
-                  });
-                }}
-                onPressDelete={() => {
-                  showConfirmDialog(product._id);
-                }}
-              />
-            );
-          })
-        )}
-      </ScrollView>
+        <CustomAlert message={error} type={alertType} />
+        <CustomInput
+          radius={5}
+          placeholder={"Search..."}
+          value={filterItem}
+          setValue={setFilterItem}
+        />
+        <ScrollView
+          style={{ flex: 1, width: "100%" }}
+          showsVerticalScrollIndicator={false}
+          refreshControl={
+            <RefreshControl
+              refreshing={refeshing}
+              onRefresh={handleOnRefresh}
+            />
+          }
+        >
+          {foundItems && foundItems.length == 0 ? (
+            <Text>{`No product found with the name of ${filterItem}!`}</Text>
+          ) : (
+            foundItems.map((product, index) => {
+              return (
+                <ProductList
+                  key={index}
+                  image={`${product?.image}`}
+                  title={product?.title}
+                  category={product?.category?.title}
+                  price={product?.price}
+                  qantity={product?.sku}
+                  onPressView={() => {
+                    console.log("view is working " + product._id);
+                  }}
+                  onPressEdit={() => {
+                    navigation.navigate("editproduct", {
+                      product: product,
+                      authUser: authUser,
+                    });
+                  }}
+                  onPressDelete={() => {
+                    showConfirmDialog(product._id);
+                  }}
+                />
+              );
+            })
+          )}
+        </ScrollView>
+      </SafeAreaView>
     </View>
   );
 };

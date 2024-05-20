@@ -4,10 +4,11 @@ import {
   View,
   StatusBar,
   TouchableOpacity,
+  SafeAreaView
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import UserProfileCard from "../../components/UserProfileCard/UserProfileCard";
-import { Ionicons } from "react-native-vector-icons";
+import Ionicons from "react-native-vector-icons/Ionicons";
 import OptionList from "../../components/OptionList/OptionList";
 import { colors } from "../../constants";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -30,37 +31,40 @@ const UserProfileScreen = ({ navigation, route }) => {
   }, []);
   return (
     <View style={styles.container}>
-      <StatusBar style="auto"></StatusBar>
-      <View style={styles.TopBarContainer}>
-        <TouchableOpacity>
-          <Ionicons name="menu-sharp" size={30} color={colors.primary} />
-        </TouchableOpacity>
-      </View>
-      <View style={styles.screenNameContainer}>
-        <Text style={styles.screenNameText}>Profile</Text>
-      </View>
-      <View style={styles.UserProfileCardContianer}>
-        <UserProfileCard
-          Icon={Ionicons}
-          name={userInfo?.name}
-          email={userInfo?.email}
-        />
-      </View>
-      <View style={styles.OptionsContainer}>
-        <OptionList
-          text={"My Account"}
-          Icon={Ionicons}
-          iconName={"person"}
-          onPress={() => navigation.navigate("myaccount", { user: userInfo })}
-        />
-        <OptionList
-          text={"Wishlist"}
-          Icon={Ionicons}
-          iconName={"heart"}
-          onPress={() => navigation.navigate("mywishlist", { user: userInfo })}
-        />
-        {/* !For future use --- */}
-        {/* <OptionList
+      <SafeAreaView style={styles.container}>
+        <StatusBar style="auto"></StatusBar>
+        <View style={styles.TopBarContainer}>
+          <TouchableOpacity>
+            <Ionicons name="menu-sharp" size={30} color={colors.primary} />
+          </TouchableOpacity>
+        </View>
+        <View style={styles.screenNameContainer}>
+          <Text style={styles.screenNameText}>Profile</Text>
+        </View>
+        <View style={styles.UserProfileCardContianer}>
+          <UserProfileCard
+            Icon={Ionicons}
+            name={userInfo?.name}
+            email={userInfo?.email}
+          />
+        </View>
+        <View style={styles.OptionsContainer}>
+          <OptionList
+            text={"My Account"}
+            Icon={Ionicons}
+            iconName={"person"}
+            onPress={() => navigation.navigate("myaccount", { user: userInfo })}
+          />
+          <OptionList
+            text={"Wishlist"}
+            Icon={Ionicons}
+            iconName={"heart"}
+            onPress={() =>
+              navigation.navigate("mywishlist", { user: userInfo })
+            }
+          />
+          {/* !For future use --- */}
+          {/* <OptionList
           text={"Settings"}
           Icon={Ionicons}
           iconName={"settings-sharp"}
@@ -72,17 +76,18 @@ const UserProfileScreen = ({ navigation, route }) => {
           iconName={"help-circle"}
           onPress={() => console.log("working....")}
         /> */}
-        {/* !For future use ---- End */}
-        <OptionList
-          text={"Logout"}
-          Icon={Ionicons}
-          iconName={"log-out"}
-          onPress={async () => {
-            await AsyncStorage.removeItem("authUser");
-            navigation.replace("login");
-          }}
-        />
-      </View>
+          {/* !For future use ---- End */}
+          <OptionList
+            text={"Logout"}
+            Icon={Ionicons}
+            iconName={"log-out"}
+            onPress={async () => {
+              await AsyncStorage.removeItem("authUser");
+              navigation.replace("login");
+            }}
+          />
+        </View>
+      </SafeAreaView>
     </View>
   );
 };

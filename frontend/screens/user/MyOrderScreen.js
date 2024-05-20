@@ -6,10 +6,11 @@ import {
   ScrollView,
   TouchableOpacity,
   RefreshControl,
+  SafeAreaView,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import { colors, network } from "../../constants";
-import { Ionicons } from "react-native-vector-icons";
+import Ionicons from "react-native-vector-icons/Ionicons";
 import CustomAlert from "../../components/CustomAlert/CustomAlert";
 import ProgressDialog from "react-native-progress-dialog";
 import OrderList from "../../components/OrderList/OrderList";
@@ -105,65 +106,67 @@ const MyOrderScreen = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
-      <StatusBar></StatusBar>
-      <ProgressDialog visible={isloading} label={label} />
-      <View style={styles.topBarContainer}>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.goBack();
-          }}
-        >
-          <Ionicons
-            name="arrow-back-circle-outline"
-            size={30}
-            color={colors.muted}
-          />
-        </TouchableOpacity>
-        <View></View>
-        <TouchableOpacity onPress={() => handleOnRefresh()}>
-          <Ionicons name="cart-outline" size={30} color={colors.primary} />
-        </TouchableOpacity>
-      </View>
-      <View style={styles.screenNameContainer}>
-        <View>
-          <Text style={styles.screenNameText}>My Orders</Text>
-        </View>
-        <View>
-          <Text style={styles.screenNameParagraph}>
-            Your order and your order status
-          </Text>
-        </View>
-      </View>
-      <CustomAlert message={error} type={alertType} />
-      {orders.length == 0 ? (
-        <View style={styles.ListContiainerEmpty}>
-          <Text style={styles.secondaryTextSmItalic}>
-            "There are no orders placed yet."
-          </Text>
-        </View>
-      ) : (
-        <ScrollView
-          style={{ flex: 1, width: "100%", padding: 20 }}
-          showsVerticalScrollIndicator={false}
-          refreshControl={
-            <RefreshControl
-              refreshing={refeshing}
-              onRefresh={handleOnRefresh}
+      <SafeAreaView style={styles.container}>
+        <StatusBar></StatusBar>
+        <ProgressDialog visible={isloading} label={label} />
+        <View style={styles.topBarContainer}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.goBack();
+            }}
+          >
+            <Ionicons
+              name="arrow-back-circle-outline"
+              size={30}
+              color={colors.muted}
             />
-          }
-        >
-          {orders.map((order, index) => {
-            return (
-              <OrderList
-                item={order}
-                key={index}
-                onPress={() => handleOrderDetail(order)}
+          </TouchableOpacity>
+          <View></View>
+          <TouchableOpacity onPress={() => handleOnRefresh()}>
+            <Ionicons name="cart-outline" size={30} color={colors.primary} />
+          </TouchableOpacity>
+        </View>
+        <View style={styles.screenNameContainer}>
+          <View>
+            <Text style={styles.screenNameText}>My Orders</Text>
+          </View>
+          <View>
+            <Text style={styles.screenNameParagraph}>
+              Your order and your order status
+            </Text>
+          </View>
+        </View>
+        <CustomAlert message={error} type={alertType} />
+        {orders.length == 0 ? (
+          <View style={styles.ListContiainerEmpty}>
+            <Text style={styles.secondaryTextSmItalic}>
+              "There are no orders placed yet."
+            </Text>
+          </View>
+        ) : (
+          <ScrollView
+            style={{ flex: 1, width: "100%", padding: 20 }}
+            showsVerticalScrollIndicator={false}
+            refreshControl={
+              <RefreshControl
+                refreshing={refeshing}
+                onRefresh={handleOnRefresh}
               />
-            );
-          })}
-          <View style={styles.emptyView}></View>
-        </ScrollView>
-      )}
+            }
+          >
+            {orders.map((order, index) => {
+              return (
+                <OrderList
+                  item={order}
+                  key={index}
+                  onPress={() => handleOrderDetail(order)}
+                />
+              );
+            })}
+            <View style={styles.emptyView}></View>
+          </ScrollView>
+        )}
+      </SafeAreaView>
     </View>
   );
 };

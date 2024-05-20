@@ -7,11 +7,12 @@ import {
   TouchableOpacity,
   RefreshControl,
   Alert,
+  SafeAreaView
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import { colors, network } from "../../constants";
-import { Ionicons } from "react-native-vector-icons";
-import { AntDesign } from "react-native-vector-icons";
+import Ionicons from "react-native-vector-icons/Ionicons";
+import AntDesign from "react-native-vector-icons/AntDesign";
 import CustomAlert from "../../components/CustomAlert/CustomAlert";
 import CustomInput from "../../components/CustomInput/";
 import ProgressDialog from "react-native-progress-dialog";
@@ -159,69 +160,74 @@ const ViewCategoryScreen = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
-      <ProgressDialog visible={isloading} label={label} />
-      <StatusBar></StatusBar>
-      <View style={styles.TopBarContainer}>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.goBack();
-          }}
-        >
-          <Ionicons
-            name="arrow-back-circle-outline"
-            size={30}
-            color={colors.muted}
-          />
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate("addcategories", { authUser: authUser });
-          }}
-        >
-          <AntDesign name="plussquare" size={30} color={colors.muted} />
-        </TouchableOpacity>
-      </View>
-      <View style={styles.screenNameContainer}>
-        <View>
-          <Text style={styles.screenNameText}>View Categories</Text>
-        </View>
-        <View>
-          <Text style={styles.screenNameParagraph}>View all Categories</Text>
-        </View>
-      </View>
-      <CustomAlert message={error} type={alertType} />
-      <CustomInput
-        radius={5}
-        placeholder={"Search..."}
-        value={filterItem}
-        setValue={setFilterItem}
-      />
-      <ScrollView
-        style={{ flex: 1, width: "100%" }}
-        showsVerticalScrollIndicator={false}
-        refreshControl={
-          <RefreshControl refreshing={refeshing} onRefresh={handleOnRefresh} />
-        }
-      >
-        {foundItems && foundItems.length == 0 ? (
-          <Text>{`No category found with the title of ${filterItem}!`}</Text>
-        ) : (
-          foundItems.map((item, index) => (
-            <CategoryList
-              icon={`${network.serverip}/uploads/${item?.icon}`}
-              key={index}
-              title={item?.title}
-              description={item?.description}
-              onPressEdit={() => {
-                handleEdit(item);
-              }}
-              onPressDelete={() => {
-                showConfirmDialog(item?._id);
-              }}
+      <SafeAreaView style={styles.container}>
+        <ProgressDialog visible={isloading} label={label} />
+        <StatusBar translucent />
+        <View style={styles.TopBarContainer}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.goBack();
+            }}
+          >
+            <Ionicons
+              name="arrow-back-circle-outline"
+              size={30}
+              color={colors.muted}
             />
-          ))
-        )}
-      </ScrollView>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("addcategories", { authUser: authUser });
+            }}
+          >
+            <AntDesign name="plussquare" size={30} color={colors.muted} />
+          </TouchableOpacity>
+        </View>
+        <View style={styles.screenNameContainer}>
+          <View>
+            <Text style={styles.screenNameText}>View Categories</Text>
+          </View>
+          <View>
+            <Text style={styles.screenNameParagraph}>View all Categories</Text>
+          </View>
+        </View>
+        <CustomAlert message={error} type={alertType} />
+        <CustomInput
+          radius={5}
+          placeholder={"Search..."}
+          value={filterItem}
+          setValue={setFilterItem}
+        />
+        <ScrollView
+          style={{ flex: 1, width: "100%" }}
+          showsVerticalScrollIndicator={false}
+          refreshControl={
+            <RefreshControl
+              refreshing={refeshing}
+              onRefresh={handleOnRefresh}
+            />
+          }
+        >
+          {foundItems && foundItems.length == 0 ? (
+            <Text>{`No category found with the title of ${filterItem}!`}</Text>
+          ) : (
+            foundItems.map((item, index) => (
+              <CategoryList
+                icon={`${network.serverip}/uploads/${item?.icon}`}
+                key={index}
+                title={item?.title}
+                description={item?.description}
+                onPressEdit={() => {
+                  handleEdit(item);
+                }}
+                onPressDelete={() => {
+                  showConfirmDialog(item?._id);
+                }}
+              />
+            ))
+          )}
+        </ScrollView>
+      </SafeAreaView>
     </View>
   );
 };

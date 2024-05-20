@@ -5,9 +5,10 @@ import {
   View,
   StatusBar,
   Text,
+  SafeAreaView,
 } from "react-native";
 import React, { useState, useEffect } from "react";
-import { Ionicons } from "react-native-vector-icons";
+import Ionicons from "react-native-vector-icons/Ionicons";
 import cartIcon from "../../assets/icons/cart_beg.png";
 import { colors, network } from "../../constants";
 import CustomButton from "../../components/CustomButton";
@@ -182,7 +183,7 @@ const ProductDetailScreen = ({ navigation, route }) => {
   useEffect(() => {
     setQuantity(0);
     setAvaiableQuantity(product.quantity);
-    SetProductImage(`${network.serverip}/uploads/${product?.image}`);
+    SetProductImage(`${product?.image}`);
     fetchWishlist();
   }, []);
 
@@ -191,111 +192,115 @@ const ProductDetailScreen = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
-      <StatusBar></StatusBar>
-      <View style={styles.topBarContainer}>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.goBack();
-          }}
-        >
-          <Ionicons
-            name="arrow-back-circle-outline"
-            size={30}
-            color={colors.muted}
-          />
-        </TouchableOpacity>
+      <SafeAreaView style={styles.container}>
+        <StatusBar></StatusBar>
+        <View style={styles.topBarContainer}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.goBack();
+            }}
+          >
+            <Ionicons
+              name="arrow-back-circle-outline"
+              size={30}
+              color={colors.muted}
+            />
+          </TouchableOpacity>
 
-        <View></View>
-        <TouchableOpacity
-          style={styles.cartIconContainer}
-          onPress={() => navigation.navigate("cart")}
-        >
-          {cartproduct.length > 0 ? (
-            <View style={styles.cartItemCountContainer}>
-              <Text style={styles.cartItemCountText}>{cartproduct.length}</Text>
-            </View>
-          ) : (
-            <></>
-          )}
-          <Image source={cartIcon} />
-        </TouchableOpacity>
-      </View>
-      <View style={styles.bodyContainer}>
-        <View style={styles.productImageContainer}>
-          <Image source={{ uri: productImage }} style={styles.productImage} />
+          <View></View>
+          <TouchableOpacity
+            style={styles.cartIconContainer}
+            onPress={() => navigation.navigate("cart")}
+          >
+            {cartproduct.length > 0 ? (
+              <View style={styles.cartItemCountContainer}>
+                <Text style={styles.cartItemCountText}>
+                  {cartproduct.length}
+                </Text>
+              </View>
+            ) : (
+              <></>
+            )}
+            <Image source={cartIcon} />
+          </TouchableOpacity>
         </View>
-        <CustomAlert message={error} type={alertType} />
-        <View style={styles.productInfoContainer}>
-          <View style={styles.productInfoTopContainer}>
-            <View style={styles.productNameContaier}>
-              <Text style={styles.productNameText}>{product?.title}</Text>
-            </View>
-            <View style={styles.infoButtonContainer}>
-              <View style={styles.wishlistButtonContainer}>
-                <TouchableOpacity
-                  disabled={isDisable}
-                  style={styles.iconContainer}
-                  onPress={() => handleWishlistBtn()}
-                >
-                  {onWishlist == false ? (
-                    <Ionicons name="heart" size={25} color={colors.muted} />
-                  ) : (
-                    <Ionicons name="heart" size={25} color={colors.danger} />
-                  )}
-                </TouchableOpacity>
+        <View style={styles.bodyContainer}>
+          <View style={styles.productImageContainer}>
+            <Image source={{ uri: productImage }} style={styles.productImage} />
+          </View>
+          <CustomAlert message={error} type={alertType} />
+          <View style={styles.productInfoContainer}>
+            <View style={styles.productInfoTopContainer}>
+              <View style={styles.productNameContaier}>
+                <Text style={styles.productNameText}>{product?.title}</Text>
+              </View>
+              <View style={styles.infoButtonContainer}>
+                <View style={styles.wishlistButtonContainer}>
+                  <TouchableOpacity
+                    disabled={isDisable}
+                    style={styles.iconContainer}
+                    onPress={() => handleWishlistBtn()}
+                  >
+                    {onWishlist == false ? (
+                      <Ionicons name="heart" size={25} color={colors.muted} />
+                    ) : (
+                      <Ionicons name="heart" size={25} color={colors.danger} />
+                    )}
+                  </TouchableOpacity>
+                </View>
+              </View>
+              <View style={styles.productDetailContainer}>
+                <View style={styles.productSizeOptionContainer}>
+                  {/* <Text style={styles.secondaryTextSm}>Size:</Text> */}
+                </View>
+                <View style={styles.productPriceContainer}>
+                  <Text style={styles.secondaryTextSm}>Price:</Text>
+                  <Text style={styles.primaryTextSm}>{product?.price}$</Text>
+                </View>
+              </View>
+              <View style={styles.productDescriptionContainer}>
+                <Text style={styles.secondaryTextSm}>Description:</Text>
+                <Text>{product?.description}</Text>
               </View>
             </View>
-            <View style={styles.productDetailContainer}>
-              <View style={styles.productSizeOptionContainer}>
-                {/* <Text style={styles.secondaryTextSm}>Size:</Text> */}
+            <View style={styles.productInfoBottomContainer}>
+              <View style={styles.counterContainer}>
+                <View style={styles.counter}>
+                  <TouchableOpacity
+                    style={styles.counterButtonContainer}
+                    onPress={() => {
+                      handleDecreaseButton(quantity);
+                    }}
+                  >
+                    <Text style={styles.counterButtonText}>-</Text>
+                  </TouchableOpacity>
+                  <Text style={styles.counterCountText}>{quantity}</Text>
+                  <TouchableOpacity
+                    style={styles.counterButtonContainer}
+                    onPress={() => {
+                      handleIncreaseButton(quantity);
+                    }}
+                  >
+                    <Text style={styles.counterButtonText}>+</Text>
+                  </TouchableOpacity>
+                </View>
               </View>
-              <View style={styles.productPriceContainer}>
-                <Text style={styles.secondaryTextSm}>Price:</Text>
-                <Text style={styles.primaryTextSm}>{product?.price}$</Text>
+              <View style={styles.productButtonContainer}>
+                {avaiableQuantity > 0 ? (
+                  <CustomButton
+                    text={"Add to Cart"}
+                    onPress={() => {
+                      handleAddToCat(product);
+                    }}
+                  />
+                ) : (
+                  <CustomButton text={"Out of Stock"} disabled={true} />
+                )}
               </View>
-            </View>
-            <View style={styles.productDescriptionContainer}>
-              <Text style={styles.secondaryTextSm}>Description:</Text>
-              <Text>{product?.description}</Text>
             </View>
           </View>
-          <View style={styles.productInfoBottomContainer}>
-            <View style={styles.counterContainer}>
-              <View style={styles.counter}>
-                <TouchableOpacity
-                  style={styles.counterButtonContainer}
-                  onPress={() => {
-                    handleDecreaseButton(quantity);
-                  }}
-                >
-                  <Text style={styles.counterButtonText}>-</Text>
-                </TouchableOpacity>
-                <Text style={styles.counterCountText}>{quantity}</Text>
-                <TouchableOpacity
-                  style={styles.counterButtonContainer}
-                  onPress={() => {
-                    handleIncreaseButton(quantity);
-                  }}
-                >
-                  <Text style={styles.counterButtonText}>+</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-            <View style={styles.productButtonContainer}>
-              {avaiableQuantity > 0 ? (
-                <CustomButton
-                  text={"Add to Cart"}
-                  onPress={() => {
-                    handleAddToCat(product);
-                  }}
-                />
-              ) : (
-                <CustomButton text={"Out of Stock"} disabled={true} />
-              )}
-            </View>
-          </View>
         </View>
-      </View>
+      </SafeAreaView>
     </View>
   );
 };

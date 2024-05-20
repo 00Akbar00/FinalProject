@@ -8,6 +8,7 @@ import {
   KeyboardAvoidingView,
   ScrollView,
   ImageBackground,
+  SafeAreaView
 } from "react-native";
 import axios from "axios"; // Import Axios
 import { colors, network } from "../../constants";
@@ -37,7 +38,7 @@ const LoginScreen = ({ navigation }) => {
   };
 
   // Method to validate the user credentials and navigate to Home Screen / Dashboard
-  const loginHandle = () => {
+  const loginHandle = async () => {
     setIsLoading(true);
 
     // Validation
@@ -66,33 +67,30 @@ const LoginScreen = ({ navigation }) => {
       return setError("Password must be 6 characters long");
     }
 
-    // API Call using Axios
-    axios
-    .post(network.serverip + "/login", { email, password })
-    .then((response) => {
+    try {
+      const response = await axios.post(network.serverip + "/login", {
+        email,
+        password,
+      });
       const result = response.data;
-      if (result.status === 200 || (result.status === 1 && result.success !== false)) {
+      if (
+        result.status === 200 ||
+        (result.status === 1 && result.success !== false)
+      ) {
         if (result?.data?.userType === "ADMIN") {
           _storeData(result.data);
-          setIsLoading(false);
-          navigation.replace("dashboard", { authUser: result.data });
+          navigation.navigate("dashboard", { authUser: result.data });
         } else {
           _storeData(result.data);
-          setIsLoading(false);
-          navigation.replace("tab", { user: result.data });
+          navigation.navigate("tab", { user: result.data });
         }
       } else {
         setIsLoading(false);
         setError(result.message);
       }
-    })
-    .catch((error) => {
-      setIsLoading(false);
+    } catch (error) {
+      console.error("LOGIN ERROR :>> ", error);
       if (error.response) {
-        // The request was made and the server responded with a status code
-        // that falls out of the range of 2xx
-        console.log("Server Error Status:", error.response.status);
-        console.log("Server Error Data:", error.response.data);
         setError("Server Error: " + error.response.data.message);
       } else if (error.request) {
         // The request was made but no response was received
@@ -105,56 +103,66 @@ const LoginScreen = ({ navigation }) => {
         console.log("Axios Error:", error.message);
         setError("Axios Error: " + error.message);
       }
-    });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
     <InternetConnectionAlert onChange={(connectionState) => {}}>
       <KeyboardAvoidingView behavior="padding" style={styles.container}>
-        <ImageBackground source={background_image} style={styles.backgroundImage}>
-          <ScrollView contentContainerStyle={styles.scrollView}>
-            <ProgressDialog visible={isLoading} label={"Login ..."} />
-            <StatusBar />
-            <View style={styles.logoContainer}>
-              <Image source={header_logo} style={styles.logo} />
-              <Text style={styles.welcomeText}>AR store</Text>
-              <Text style={styles.welcomeParagraph}>Be more precise</Text>
-            </View>
-            <View style={styles.formContainer}>
-              <CustomAlert message={error} type={"error"} />
-              <CustomInput
-                value={email}
-                setValue={setEmail}
-                placeholder={"Username"}
-                placeholderTextColor={colors.muted}
-                radius={5}
-              />
-              <CustomInput
-                value={password}
-                setValue={setPassword}
-                secureTextEntry={true}
-                placeholder={"Password"}
-                placeholderTextColor={colors.muted}
-                radius={5}
-              />
-              <Text
-                onPress={() => navigation.navigate("forgetpassword")}
-                style={styles.forgetText}
-              >
-                Forget Password?
-              </Text>
-            </View>
-            <View style={styles.bottomContainer}>
-              <CustomButton text={"Login"} onPress={loginHandle} />
-              <View style={styles.signupContainer}>
-                <Text>Don't have an account?</Text>
-                <Text onPress={() => navigation.navigate("signup")} style={styles.signupText}>
-                  Signup
+        <SafeAreaView style={styles.container}>
+          <ImageBackground
+            source={background_image}
+            style={styles.backgroundImage}
+          >
+            <ScrollView contentContainerStyle={styles.scrollView}>
+              <ProgressDialog visible={isLoading} label={"Login ..."} />
+              <StatusBar />
+              <View style={styles.logoContainer}>
+                <Image source={header_logo} style={styles.logo} />
+                <Text style={styles.welcomeText}>AR store</Text>
+                <Text style={styles.welcomeParagraph}>Be more precise</Text>
+              </View>
+              <View style={styles.formContainer}>
+                <CustomAlert message={error} type={"error"} />
+                <CustomInput
+                  value={email}
+                  setValue={setEmail}
+                  placeholder={"Username"}
+                  placeholderTextColor={colors.muted}
+                  radius={5}
+                />
+                <CustomInput
+                  value={password}
+                  setValue={setPassword}
+                  secureTextEntry={true}
+                  placeholder={"Password"}
+                  placeholderTextColor={colors.muted}
+                  radius={5}
+                />
+                <Text
+                  onPress={() => navigation.navigate("forgetpassword")}
+                  style={styles.forgetText}
+                >
+                  Forget Password?
                 </Text>
               </View>
-            </View>
-          </ScrollView>
-        </ImageBackground>
+              <View style={styles.bottomContainer}>
+                <CustomButton text={"Login"} onPress={loginHandle} />
+                <View style={styles.signupContainer}>
+                  <Text>Don't have an account?</Text>
+                  <Text
+                    onPress={() => navigation.navigate("signup")}
+                    style={styles.signupText}
+                  >
+                    Signup
+                  </Text>
+                </View>
+              </View>
+            </ScrollView>
+          </ImageBackground>
+        </SafeAreaView>
       </KeyboardAvoidingView>
     </InternetConnectionAlert>
   );

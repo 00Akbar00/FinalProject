@@ -5,11 +5,12 @@ import {
   StatusBar,
   TouchableOpacity,
   Alert,
+  SafeAreaView
 } from "react-native";
 import React, { useState } from "react";
 import UserProfileCard from "../../components/UserProfileCard/UserProfileCard";
-import { Ionicons } from "react-native-vector-icons";
-import { MaterialIcons } from "react-native-vector-icons";
+import Ionicons from "react-native-vector-icons/Ionicons";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import OptionList from "../../components/OptionList/OptionList";
 import { network } from "../../constants";
 
@@ -62,50 +63,52 @@ const MyAccountScreen = ({ navigation, route }) => {
   };
   return (
     <View style={styles.container}>
-      <StatusBar style="auto"></StatusBar>
-      <View style={styles.TopBarContainer}>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.goBack();
-          }}
-        >
-          <Ionicons
-            name="arrow-back-circle-outline"
-            size={30}
-            color={colors.muted}
+      <SafeAreaView style={styles.container}>
+        <StatusBar style="auto"></StatusBar>
+        <View style={styles.TopBarContainer}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.goBack();
+            }}
+          >
+            <Ionicons
+              name="arrow-back-circle-outline"
+              size={30}
+              color={colors.muted}
+            />
+          </TouchableOpacity>
+        </View>
+        <View style={styles.screenNameContainer}>
+          <Text style={styles.screenNameText}>My Account</Text>
+        </View>
+        <View style={styles.UserProfileCardContianer}>
+          <UserProfileCard
+            Icon={Ionicons}
+            name={user["name"]}
+            email={user["email"]}
           />
-        </TouchableOpacity>
-      </View>
-      <View style={styles.screenNameContainer}>
-        <Text style={styles.screenNameText}>My Account</Text>
-      </View>
-      <View style={styles.UserProfileCardContianer}>
-        <UserProfileCard
-          Icon={Ionicons}
-          name={user["name"]}
-          email={user["email"]}
-        />
-      </View>
-      <View style={styles.OptionsContainer}>
-        <OptionList
-          text={"Change Password"}
-          Icon={Ionicons}
-          iconName={"key-sharp"}
-          onPress={
-            () =>
-              navigation.navigate("updatepassword", {
-                userID: userID,
-              }) // navigate to updatepassword
-          }
-        />
-        <OptionList
-          text={"Delete My Account"}
-          Icon={MaterialIcons}
-          iconName={"delete"}
-          type={"danger"}
-          onPress={() => showConfirmDialog(userID)}
-        />
-      </View>
+        </View>
+        <View style={styles.OptionsContainer}>
+          <OptionList
+            text={"Change Password"}
+            Icon={Ionicons}
+            iconName={"key-sharp"}
+            onPress={
+              () =>
+                navigation.navigate("updatepassword", {
+                  userID: userID,
+                }) // navigate to updatepassword
+            }
+          />
+          <OptionList
+            text={"Delete My Account"}
+            Icon={MaterialIcons}
+            iconName={"delete"}
+            type={"danger"}
+            onPress={() => showConfirmDialog(userID)}
+          />
+        </View>
+      </SafeAreaView>
     </View>
   );
 };

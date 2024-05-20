@@ -9,12 +9,13 @@ import {
   ScrollView,
   TouchableOpacity,
   ImageBackground,
+  SafeAreaView
 } from "react-native";
 
 import { colors, network } from "../../constants";
 import CustomInput from "../../components/CustomInput";
 import CustomButton from "../../components/CustomButton";
-import { Ionicons } from "react-native-vector-icons";
+import Ionicons from "react-native-vector-icons/Ionicons";
 import CustomAlert from "../../components/CustomAlert/CustomAlert";
 import InternetConnectionAlert from "react-native-internet-connection-alert";
 import header_logo from "../../assets/logo/logo.png";
@@ -88,62 +89,76 @@ const SignupScreen = ({ navigation }) => {
       }}
     >
       <KeyboardAvoidingView style={styles.container}>
-        <ImageBackground source={background_image} style={styles.backgroundImage}>
-          <StatusBar />
-          <View style={styles.topBarContainer}>
-            <TouchableOpacity onPress={() => navigation.goBack()}>
-              <Ionicons name="arrow-back-circle-outline" size={30} color={colors.muted} />
-            </TouchableOpacity>
-          </View>
-          <ScrollView contentContainerStyle={styles.scrollView}>
-            <View style={styles.welcomeContainer}>
-              <Text style={styles.screenNameText}>Sign up</Text>
-              <Text style={styles.screenNameParagraph}>Create your account on AR store</Text>
+        <SafeAreaView style={styles.container}>
+          <ImageBackground
+            source={background_image}
+            style={styles.backgroundImage}
+          >
+            <StatusBar />
+            <View style={styles.topBarContainer}>
+              <TouchableOpacity onPress={() => navigation.goBack()}>
+                <Ionicons
+                  name="arrow-back-circle-outline"
+                  size={30}
+                  color={colors.muted}
+                />
+              </TouchableOpacity>
             </View>
-            <View style={styles.formContainer}>
-              <CustomAlert message={error} type={"error"} />
-              <CustomInput
-                value={name}
-                setValue={setName}
-                placeholder={"Name"}
-                placeholderTextColor={colors.muted}
-                radius={5}
-              />
-              <CustomInput
-                value={email}
-                setValue={setEmail}
-                placeholder={"Email"}
-                placeholderTextColor={colors.muted}
-                radius={5}
-              />
-              <CustomInput
-                value={password}
-                setValue={setPassword}
-                secureTextEntry={true}
-                placeholder={"Password"}
-                placeholderTextColor={colors.muted}
-                radius={5}
-              />
-              <CustomInput
-                value={confirmPassword}
-                setValue={setConfirmPassword}
-                secureTextEntry={true}
-                placeholder={"Confirm Password"}
-                placeholderTextColor={colors.muted}
-                radius={5}
-              />
+            <ScrollView contentContainerStyle={styles.scrollView}>
+              <View style={styles.welcomeContainer}>
+                <Text style={styles.screenNameText}>Sign up</Text>
+                <Text style={styles.screenNameParagraph}>
+                  Create your account on AR store
+                </Text>
+              </View>
+              <View style={styles.formContainer}>
+                <CustomAlert message={error} type={"error"} />
+                <CustomInput
+                  value={name}
+                  setValue={setName}
+                  placeholder={"Name"}
+                  placeholderTextColor={colors.muted}
+                  radius={5}
+                />
+                <CustomInput
+                  value={email}
+                  setValue={setEmail}
+                  placeholder={"Email"}
+                  placeholderTextColor={colors.muted}
+                  radius={5}
+                />
+                <CustomInput
+                  value={password}
+                  setValue={setPassword}
+                  secureTextEntry={true}
+                  placeholder={"Password"}
+                  placeholderTextColor={colors.muted}
+                  radius={5}
+                />
+                <CustomInput
+                  value={confirmPassword}
+                  setValue={setConfirmPassword}
+                  secureTextEntry={true}
+                  placeholder={"Confirm Password"}
+                  placeholderTextColor={colors.muted}
+                  radius={5}
+                />
+              </View>
+            </ScrollView>
+            <View style={styles.bottomContainer}>
+              <CustomButton text={"Sign up"} onPress={signUpHandle} />
+              <View style={styles.signupContainer}>
+                <Text>Already have an account?</Text>
+                <Text
+                  onPress={() => navigation.navigate("login")}
+                  style={styles.signupText}
+                >
+                  Login
+                </Text>
+              </View>
             </View>
-          </ScrollView>
-          <View style={styles.bottomContainer}>
-            <CustomButton text={"Sign up"} onPress={signUpHandle} />
-            <View style={styles.signupContainer}>
-              <Text>Already have an account?</Text>
-              <Text onPress={() => navigation.navigate("login")} style={styles.signupText}>
-                Login
-              </Text>
-            </View>
-          </View>
-        </ImageBackground>
+          </ImageBackground>
+        </SafeAreaView>
       </KeyboardAvoidingView>
     </InternetConnectionAlert>
   );
@@ -159,7 +174,7 @@ const styles = StyleSheet.create({
     flex: 1,
     resizeMode: "cover",
     justifyContent: "center",
-    padding:15,
+    padding: 15,
   },
   topBarContainer: {
     width: "100%",
@@ -205,7 +220,7 @@ const styles = StyleSheet.create({
   bottomContainer: {
     alignItems: "center",
     marginTop: 15,
-    paddingBottom:20,
+    paddingBottom: 20,
   },
   signupContainer: {
     flexDirection: "row",

@@ -1,10 +1,21 @@
 const fs = require("fs");
 const driveService = require("../../utils/driveService");
 
+function convertToDirectLink(webViewLink) {
+  // Extract the file ID from the web view link
+  const fileIdMatch = webViewLink.match(/\/d\/(.*?)\//);
+  if (fileIdMatch && fileIdMatch[1]) {
+    const fileId = fileIdMatch[1];
+    // Construct the direct link using the file ID
+    return `https://drive.google.com/uc?export=view&id=${fileId}`;
+  } else {
+    throw new Error("Invalid Google Drive web view link");
+  }
+}
+
 // controller to upload files
 const uploadFile = async (req, res) => {
   const image = req.file;
-  console.log(req.file);
 
   try {
     // as the file name stored is gibberish with no extension, that file is replaced by the original filename
@@ -49,7 +60,7 @@ const uploadFile = async (req, res) => {
       fields: "webViewLink",
     });
 
-    const fileUrl = result.data.webViewLink;
+    const fileUrl = convertToDirectLink(result.data.webViewLink);
 
     // Here you can save the fileUrl to your database
     // Example: await saveToFileDatabase(fileUrl);
@@ -64,7 +75,6 @@ const uploadFile = async (req, res) => {
   }
 };
 
-
 module.exports = {
-  uploadFile
+  uploadFile,
 };

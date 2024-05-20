@@ -7,18 +7,20 @@ import {
   KeyboardAvoidingView,
   ScrollView,
   TouchableOpacity,
+  SafeAreaView,
 } from "react-native";
 import React, { useState } from "react";
 import { colors, network } from "../../constants";
 import CustomInput from "../../components/CustomInput";
 import CustomButton from "../../components/CustomButton";
-import { Ionicons } from "react-native-vector-icons";
+import Ionicons from "react-native-vector-icons/Ionicons";
 import CustomAlert from "../../components/CustomAlert/CustomAlert";
-// import * as ImagePicker from "expo-image-picker";
 import ProgressDialog from "react-native-progress-dialog";
-import { AntDesign } from "react-native-vector-icons";
+import AntDesign from "react-native-vector-icons/AntDesign";
 import { useEffect } from "react";
 import DropDownPicker from "react-native-dropdown-picker";
+import { launchImageLibrary } from "react-native-image-picker";
+import axios from "axios";
 
 const AddProductScreen = ({ navigation, route }) => {
   const { authUser } = route.params;
@@ -26,7 +28,8 @@ const AddProductScreen = ({ navigation, route }) => {
   const [title, setTitle] = useState("");
   const [price, setPrice] = useState("");
   const [sku, setSku] = useState("");
-  const [image, setImage] = useState("");
+  const [image, setImage] = useState(null);
+  const [imageUrl, setImageUrl] = useState("");
   const [error, setError] = useState("");
   const [quantity, setQuantity] = useState("");
   const [description, setDescription] = useState("");
@@ -96,60 +99,54 @@ const AddProductScreen = ({ navigation, route }) => {
   myHeaders.append("x-auth-token", authUser.token);
   myHeaders.append("Content-Type", "application/json");
 
-  const upload = async () => {
-    console.log("upload-F:", image);
+  const upload = async (imageAsset) => {
+    const formData = new FormData();
+    formData.append("file", {
+      uri: imageAsset.uri,
+      type: imageAsset.type,
+      name: imageAsset.fileName,
+    });
 
-    var formdata = new FormData();
-    formdata.append("photos", image, "product.png");
+    const url = `${network.serverip}/upload-file`;
 
-    var ImageRequestOptions = {
-      method: "POST",
-      body: formdata,
-      redirect: "follow",
-    };
-
-    fetch(
-        `${network.serverip}/photos/upload-file`,
-      ImageRequestOptions
-    )
-      .then((response) => response.json())
-      .then((result) => {
-        console.log(result);
-      })
-      .catch((error) => console.log("error", error));
+    const imageUploadResponse = await axios.post(url, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    setImageUrl(imageUploadResponse.data.fileUrl);
   };
 
-  var raw = JSON.stringify({
+  const raw = {
     title: title,
     sku: sku,
     price: price,
-    image: image,
+    image: imageUrl,
     description: description,
     category: category,
     quantity: quantity,
-  });
+  };
 
-  var requestOptions = {
+  const requestOptions = {
     method: "POST",
     headers: myHeaders,
     body: raw,
-    redirect: "follow",
   };
 
   //Method for selecting the image from device gallery
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [1, 1],
-      quality: 0.5,
-    });
+    let result = await launchImageLibrary(
+      {
+        mediaTypes: "photo",
+        quality: 0.5,
+      },
+      (response) => {}
+    );
 
     if (!result.cancelled) {
-      console.log(result);
-      setImage(result.assets[0].uri);
-      upload();
+      setImage(result.assets[0]);
+      upload(result.assets[0]);
     }
   };
 
@@ -172,10 +169,16 @@ const AddProductScreen = ({ navigation, route }) => {
       setIsloading(false);
     } else {
       //[check validation] -- End
-      fetch(network.serverip + "/product", requestOptions)
+      const fetchRequestOptionAndData = {
+        ...requestOptions,
+        body: JSON.stringify({
+          ...raw,
+          image: imageUrl,
+        }),
+      };
+      fetch(network.serverip + "/product", fetchRequestOptionAndData)
         .then((response) => response.json())
         .then((result) => {
-          console.log(result);
           if (result.success == true) {
             setIsloading(false);
             setAlertType("success");
@@ -199,109 +202,117 @@ const AddProductScreen = ({ navigation, route }) => {
 
   return (
     <KeyboardAvoidingView style={styles.container}>
-      <StatusBar></StatusBar>
-      <ProgressDialog visible={isloading} label={"Adding ..."} />
-      <View style={styles.TopBarContainer}>
-        <TouchableOpacity
-          onPress={() => {
-            // navigation.replace("viewproduct", { authUser: authUser });
-            navigation.goBack();
-          }}
-        >
-          <Ionicons
-            name="arrow-back-circle-outline"
-            size={30}
-            color={colors.muted}
-          />
-        </TouchableOpacity>
-      </View>
-      <View style={styles.screenNameContainer}>
-        <View>
-          <Text style={styles.screenNameText}>Add Product</Text>
+      <SafeAreaView style={styles.container}>
+        <StatusBar translucent />
+        <ProgressDialog visible={isloading} label={"Adding ..."} />
+        <View style={styles.TopBarContainer}>
+          <TouchableOpacity
+            onPress={() => {
+              // navigation.replace("viewproduct", { authUser: authUser });
+              navigation.goBack();
+            }}
+          >
+            <Ionicons
+              name="arrow-back-circle-outline"
+              size={30}
+              color={colors.muted}
+            />
+          </TouchableOpacity>
         </View>
-        <View>
-          <Text style={styles.screenNameParagraph}>Add product details</Text>
-        </View>
-      </View>
-      <CustomAlert message={error} type={alertType} />
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        style={{ flex: 1, width: "100%" }}
-      >
-        <View style={styles.formContainer}>
-          <View style={styles.imageContainer}>
-            {image ? (
-              <TouchableOpacity style={styles.imageHolder} onPress={pickImage}>
-                <Image
-                  source={{ uri: image }}
-                  style={{ width: 200, height: 200 }}
-                />
-              </TouchableOpacity>
-            ) : (
-              <TouchableOpacity style={styles.imageHolder} onPress={pickImage}>
-                <AntDesign name="pluscircle" size={50} color={colors.muted} />
-              </TouchableOpacity>
-            )}
+        <View style={styles.screenNameContainer}>
+          <View>
+            <Text style={styles.screenNameText}>Add Product</Text>
           </View>
-
-          <CustomInput
-            value={sku}
-            setValue={setSku}
-            placeholder={"SKU"}
-            placeholderTextColor={colors.muted}
-            radius={5}
-          />
-          <CustomInput
-            value={title}
-            setValue={setTitle}
-            placeholder={"Title"}
-            placeholderTextColor={colors.muted}
-            radius={5}
-          />
-          <CustomInput
-            value={price}
-            setValue={setPrice}
-            placeholder={"Price"}
-            keyboardType={"number-pad"}
-            placeholderTextColor={colors.muted}
-            radius={5}
-          />
-          <CustomInput
-            value={quantity}
-            setValue={setQuantity}
-            placeholder={"Quantity"}
-            keyboardType={"number-pad"}
-            placeholderTextColor={colors.muted}
-            radius={5}
-          />
-          <CustomInput
-            value={description}
-            setValue={setDescription}
-            placeholder={"Description"}
-            placeholderTextColor={colors.muted}
-            radius={5}
-          />
+          <View>
+            <Text style={styles.screenNameParagraph}>Add product details</Text>
+          </View>
         </View>
-      </ScrollView>
-      <DropDownPicker
-        placeholder={"Select Product Category"}
-        open={open}
-        value={category}
-        items={items}
-        setOpen={setOpen}
-        setValue={setCategory}
-        setItems={setItems}
-        disabled={statusDisable}
-        disabledStyle={{
-          backgroundColor: colors.light,
-          borderColor: colors.white,
-        }}
-        labelStyle={{ color: colors.muted }}
-        style={{ borderColor: "#fff", elevation: 5 }}
-      />
-      <View style={styles.buttomContainer}>
-        <CustomButton text={"Add Product"} onPress={addProductHandle} />
-      </View>
+        <CustomAlert message={error} type={alertType} />
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          style={{ flex: 1, width: "100%" }}
+        >
+          <View style={styles.formContainer}>
+            <View style={styles.imageContainer}>
+              {image ? (
+                <TouchableOpacity
+                  style={styles.imageHolder}
+                  onPress={pickImage}
+                >
+                  <Image
+                    source={{ uri: image.uri }}
+                    style={{ width: 200, height: 200 }}
+                  />
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity
+                  style={styles.imageHolder}
+                  onPress={pickImage}
+                >
+                  <AntDesign name="pluscircle" size={50} color={colors.muted} />
+                </TouchableOpacity>
+              )}
+            </View>
+
+            <CustomInput
+              value={sku}
+              setValue={setSku}
+              placeholder={"SKU"}
+              placeholderTextColor={colors.muted}
+              radius={5}
+            />
+            <CustomInput
+              value={title}
+              setValue={setTitle}
+              placeholder={"Title"}
+              placeholderTextColor={colors.muted}
+              radius={5}
+            />
+            <CustomInput
+              value={price}
+              setValue={setPrice}
+              placeholder={"Price"}
+              keyboardType={"number-pad"}
+              placeholderTextColor={colors.muted}
+              radius={5}
+            />
+            <CustomInput
+              value={quantity}
+              setValue={setQuantity}
+              placeholder={"Quantity"}
+              keyboardType={"number-pad"}
+              placeholderTextColor={colors.muted}
+              radius={5}
+            />
+            <CustomInput
+              value={description}
+              setValue={setDescription}
+              placeholder={"Description"}
+              placeholderTextColor={colors.muted}
+              radius={5}
+            />
+          </View>
+        </ScrollView>
+        <DropDownPicker
+          placeholder={"Select Product Category"}
+          open={open}
+          value={category}
+          items={items}
+          setOpen={setOpen}
+          setValue={setCategory}
+          setItems={setItems}
+          disabled={statusDisable}
+          disabledStyle={{
+            backgroundColor: colors.light,
+            borderColor: colors.white,
+          }}
+          labelStyle={{ color: colors.muted }}
+          style={{ borderColor: "#fff", elevation: 5 }}
+        />
+        <View style={styles.buttomContainer}>
+          <CustomButton text={"Add Product"} onPress={addProductHandle} />
+        </View>
+      </SafeAreaView>
     </KeyboardAvoidingView>
   );
 };
